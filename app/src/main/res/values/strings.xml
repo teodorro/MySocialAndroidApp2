@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MySocialAndroidApp2</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="hello_feed_fragment">Hello feed fragment</string>
+    <string name="hello_auth_fragment">Hello auth fragment</string>
+
+    <string name="login">Login</string>
+    <string name="login2">Log in</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_out">Sign out</string>
+</resources>
