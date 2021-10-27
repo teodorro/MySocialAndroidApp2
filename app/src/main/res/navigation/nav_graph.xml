@@ -12,10 +12,18 @@
         <action
             android:id="@+id/action_feedFragment_to_authFragment"
             app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_regFragment"
+            app:destination="@id/regFragment" />
     </fragment>
     <fragment
         android:id="@+id/authFragment"
         android:name="com.example.mysocialandroidapp2.activity.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth" />
+    <fragment
+        android:id="@+id/regFragment"
+        android:name="com.example.mysocialandroidapp2.activity.RegFragment"
+        android:label="fragment_reg"
+        tools:layout="@layout/fragment_reg" />
 </navigation>

@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">MySocialAndroidApp2</string>
+    <string name="app_label">MySocial</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="hello_feed_fragment">Hello feed fragment</string>
@@ -7,9 +8,20 @@
 
     <string name="login">Login</string>
     <string name="login2">Log in</string>
+    <string name="name">Name</string>
     <string name="sign_in">Sign in</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_out">Sign out</string>
     <string name="errorLoginPassword">Wrong login or password. Or some other error</string>
     <string name="enterLoginPassword">Please enter login and password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="channel_remote_name">Server notifications</string>
+    <string name="channel_remote_description">Notifications from remote server</string>
+
+    <string name="description_photo">Photo</string>
+    <string name="remove">Remove</string>
+    <string name="description_take_photo">Take photo</string>
+    <string name="description_select_photo">Select photo</string>
 </resources>
