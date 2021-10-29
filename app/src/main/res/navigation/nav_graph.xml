@@ -25,5 +25,14 @@
         android:id="@+id/regFragment"
         android:name="com.example.mysocialandroidapp2.activity.RegFragment"
         android:label="fragment_reg"
-        tools:layout="@layout/fragment_reg" />
+        tools:layout="@layout/fragment_reg" >
+        <action
+            android:id="@+id/action_regFragment_to_avatarFragment"
+            app:destination="@id/avatarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/avatarFragment"
+        android:name="com.example.mysocialandroidapp2.activity.AvatarFragment"
+        android:label="fragment_avatar"
+        tools:layout="@layout/fragment_avatar" />
 </navigation>

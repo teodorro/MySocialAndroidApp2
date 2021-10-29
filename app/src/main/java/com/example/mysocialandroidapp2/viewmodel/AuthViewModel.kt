@@ -1,20 +1,24 @@
 package com.example.mysocialandroidapp2.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.fragment.findNavController
+import android.content.res.Resources
+import android.net.Uri
+import android.widget.Toast
+import androidx.core.net.toFile
+import androidx.lifecycle.*
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.api.DataApiService
 import com.example.mysocialandroidapp2.auth.AppAuth
 import com.example.mysocialandroidapp2.auth.AuthState
+import com.example.mysocialandroidapp2.dto.MediaUpload
 import com.example.mysocialandroidapp2.error.ApiError
+import com.example.mysocialandroidapp2.model.PhotoModel
 import com.example.mysocialandroidapp2.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import retrofit2.Response
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,6 +45,22 @@ class AuthViewModel @Inject constructor(
     val moveToSignUpEvent: LiveData<Unit>
         get() = _moveToSignUpEvent
 
+    private val noPhoto = PhotoModel()
+
+    private val _photo = MutableLiveData(noPhoto)
+    val photo: LiveData<PhotoModel>
+        get() = _photo
+
+    private val _avatarSelected = SingleLiveEvent<Unit>()
+    val avatarSelected: LiveData<Unit>
+        get() = _avatarSelected
+
+    private val _defaultAvatarFile: File? = null
+
+    init {
+
+    }
+
     fun signIn(login: String, password: String) =
         viewModelScope.launch {
             val response = apiService.signIn(login, password)
@@ -57,27 +77,73 @@ class AuthViewModel @Inject constructor(
         auth.removeAuth()
     }
 
-    fun signUp(login: String, password: String, name: String) =
-        viewModelScope.launch {
+//    fun signUp(login: String, password: String, name: String) =
+//        viewModelScope.launch {
+//            try {
+//                val response = apiService.signUp(login, password, name)
+//
+//                if (response.isSuccessful) {
+//                    signIn(login, password)
+//                }
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//        }
+
+//    fun signUp(login: String, password: String, name: String, uri: Uri?) =
+//        viewModelScope.launch {
+//            try {
+//                var upload = MediaUpload(uri.toFile())
+//                val avatarPart = MultipartBody.Part.createFormData(
+//                    "avatar", upload.file.name, upload.file.asRequestBody())
+//                val loginPart = MultipartBody.Part.createFormData("login", login)
+//                val passwordPart = MultipartBody.Part.createFormData("password", password)
+//                val namePart = MultipartBody.Part.createFormData("name", name)
+//
+//                val response = apiService.signUpWithAvatar(loginPart, passwordPart, namePart, avatarPart)
+//
+//                if (response.isSuccessful) {
+//                    signIn(login, password)
+//                }
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//        }
+
+    fun signUp(login: String, password: String, name: String, uri: Uri?) =
+        viewModelScope.async {
             try {
-                val response = apiService.signUp(login, password, name)
+                var response: Response<AuthState> = if (uri == null)
+                    apiService.signUp(login, password, name)
+                else
+                    signUp(login, password, name, uri)
 
                 if (response.isSuccessful) {
                     signIn(login, password)
-//                    val responseSignIn = apiService.signIn(login, password)
-//
-//                    if (!responseSignIn.isSuccessful) {
-//                        auth.setAuth(0, "")
-//                        return@launch
-//                    }
-//                    val body = responseSignIn.body() ?: throw ApiError(responseSignIn.code(), responseSignIn.message())
-//                    auth.setAuth(body.id, body.token ?: "")
                 }
+                else
+                    throw ApiError(response.code(), response.message())
             } catch (e: Exception) {
-                e.printStackTrace()
+                throw ApiError(e.hashCode(), e.message.toString())
             }
         }
 
+    private suspend fun signUp(
+        login: String,
+        password: String,
+        name: String,
+        uri: Uri
+    ): Response<AuthState> {
+        val loginPart = MultipartBody.Part.createFormData("login", login)
+        val passwordPart = MultipartBody.Part.createFormData("pass", password)
+        val namePart = MultipartBody.Part.createFormData("name", name)
+        var upload = MediaUpload(uri.toFile())
+        val avatarPart = MultipartBody.Part.createFormData(
+            "file", upload.file.name, upload.file.asRequestBody()
+        )
+
+        return apiService.signUpWithAvatar(loginPart, passwordPart, namePart, avatarPart)
+    }
 
     fun signUpInvoke() {
         _moveToSignUpEvent.value = Unit
@@ -90,4 +156,36 @@ class AuthViewModel @Inject constructor(
     fun signOutInvoke() {
         _signOutEvent.value = Unit
     }
+
+    fun changePhoto(uri: Uri?, file: File?) {
+        _photo.value = PhotoModel(uri, file)
+        _avatarSelected.value = Unit
+    }
+
+    fun validateUserData(login: String, password: String, name: String) : String {
+        if (login.isBlank())
+            return Resources.getSystem().getString(R.string.validation_signup_login_blank)
+        if (password.isEmpty())
+            return Resources.getSystem().getString(R.string.validation_signup_password_empty)
+        if (name.isBlank())
+            return Resources.getSystem().getString(R.string.validation_signup_name_blank)
+        val isLoginUnique = checkUserLoginUnique(login)
+        if (isLoginUnique.isNotEmpty())
+            return isLoginUnique
+
+        return ""
+    }
+
+    private fun checkUserLoginUnique(login: String) : String =
+        runBlocking {
+            val response = apiService.getUsersAll()
+            if (!response.isSuccessful){
+                throw ApiError(response.code(), response.message())
+            }
+            val users = response.body() ?: throw ApiError(response.code(), response.message())
+            if (users.any { x -> x.login == login })
+                return@runBlocking "Login '$login' already exists"
+
+            return@runBlocking ""
+        }
 }

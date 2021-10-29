@@ -1,5 +1,6 @@
 package com.example.mysocialandroidapp2.activity
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.databinding.FragmentRegBinding
@@ -21,6 +21,8 @@ class RegFragment : Fragment() {
     private val viewModel: AuthViewModel by viewModels(
         ownerProducer = ::requireParentFragment,
     )
+
+    private var avatarUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,18 +39,20 @@ class RegFragment : Fragment() {
         )
 
         binding.buttonSignUp.setOnClickListener {
-            var login = binding.editTextLogin.text.toString()
+            var login = binding.editTextLogin.text.toString().trimIndent()
             var password = binding.editTextPassword.text.toString()
             var name = binding.editTextName.text.toString()
-            if (binding.editTextLogin.text.toString().isNotBlank()) {
-                try {
-                    viewModel.signUp(login, password, name)
-                } catch (e: Exception) {
-                    Toast.makeText(this.context, e.message, Toast.LENGTH_LONG)
+            try {
+                var isValid = viewModel.validateUserData(login, password, name)
+
+                if (isValid.isEmpty()) {
+                    viewModel.signUp(login, password, name, avatarUri)
+                } else {
+                    Toast.makeText(this.context, isValid, Toast.LENGTH_LONG)
                         .show()
                 }
-            } else {
-                Toast.makeText(this.context, R.string.enterLoginPassword, Toast.LENGTH_LONG)
+            } catch (e: Exception) {
+                Toast.makeText(this.context, e.message, Toast.LENGTH_LONG)
                     .show()
             }
         }
@@ -64,7 +68,21 @@ class RegFragment : Fragment() {
             }
         }
 
+        viewModel.photo.observe(viewLifecycleOwner) {
+            avatarUri = it.uri
+            if (it.uri == null)
+                binding.photo.setImageResource(R.drawable.ic_avatar)
+            else
+                binding.photo.setImageURI(it.uri)
+            binding.photo.visibility = View.VISIBLE
+        }
+
+        binding.materialButtonLoadAvatar.setOnClickListener {
+            findNavController().navigate(R.id.action_regFragment_to_avatarFragment)
+        }
+
         return binding.root
     }
+
 
 }

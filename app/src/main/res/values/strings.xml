@@ -24,4 +24,10 @@
     <string name="remove">Remove</string>
     <string name="description_take_photo">Take photo</string>
     <string name="description_select_photo">Select photo</string>
+
+    <string name="validation_signup_login_blank">Login should not be blank</string>
+    <string name="validation_signup_login_spaces">Login should not contain spaces</string>
+    <string name="validation_signup_password_empty">Password should not be empty</string>
+    <string name="validation_signup_name_blank">Name should not be blank</string>
+    <string name="validation_signup_login_already_exists">Such login already exists</string>
 </resources>

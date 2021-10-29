@@ -37,7 +37,7 @@ class AuthFragment : Fragment() {
         )
 
         binding.buttonLogin.setOnClickListener {
-            var login = binding.editTextLogin.text.toString()
+            var login = binding.editTextLogin.text.toString().trimIndent()
             var password = binding.editTextPassword.text.toString()
             if (binding.editTextLogin.text.toString().isNotBlank()) {
                 try {
