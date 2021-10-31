@@ -5,8 +5,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.auth.AppAuth
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -14,7 +12,6 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlin.random.Random
 
 @AndroidEntryPoint
 class FCMService : FirebaseMessagingService() {

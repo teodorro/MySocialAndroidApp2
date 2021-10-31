@@ -1,86 +1,61 @@
 package com.example.mysocialandroidapp2.activity
 
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
-import android.view.MenuItem
-import androidx.activity.viewModels
-import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.navigation.NavigationView
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mysocialandroidapp2.R
-import com.example.mysocialandroidapp2.auth.AppAuth
-import com.example.mysocialandroidapp2.viewmodel.AuthViewModel
-import com.google.firebase.messaging.FirebaseMessaging
+import com.example.mysocialandroidapp2.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity @Inject constructor() : AppCompatActivity() {
-    @Inject
-    lateinit var appAuth: AppAuth
-    @Inject
-    lateinit var firebaseMessaging: FirebaseMessaging
-//    @Inject
-//    lateinit var googleApiAvailability: GoogleApiAvailability
 
-    private val viewModel: AuthViewModel by viewModels()
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        authViewModel.moveToAuthEvent.observe(this) {
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_feedFragment_to_authFragment)
+        setSupportActionBar(binding.appBarMain.toolbar)
+
+        binding.appBarMain.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
         }
-
-        authViewModel.moveToSignUpEvent.observe(this) {
-            Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_feedFragment_to_regFragment)
-        }
-
-        authViewModel.signOutEvent.observe(this) {
-            authViewModel.signOut()
-        }
-
-        viewModel.data.observe(this) {
-            invalidateOptionsMenu()
-        }
-
-        firebaseMessaging.token.addOnCompleteListener { task ->
-            if (!task.isSuccessful)
-                Log.d(null, "Something wrong happened: ${task.exception}")
-            val token = task.result
-            Log.d(null, token)
-        }
+        val drawerLayout: DrawerLayout = binding.drawerLayout
+        val navView: NavigationView = binding.navView
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+            ), drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 
-    private val authViewModel: AuthViewModel by viewModels()
-
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_auth, menu)
-        menu?.let {
-            it.setGroupVisible(R.id.unauthenticated, !authViewModel.authenticated)
-            it.setGroupVisible(R.id.authenticated, authViewModel.authenticated)
-        }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.signin -> {
-                authViewModel.moveToAuthInvoke()
-                true
-            }
-            R.id.signup -> {
-                authViewModel.signUpInvoke()
-                true
-            }
-            R.id.signout -> {
-                authViewModel.signOutInvoke()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

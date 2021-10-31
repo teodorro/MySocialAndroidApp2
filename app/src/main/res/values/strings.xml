@@ -14,8 +14,6 @@
     <string name="sign_out">Sign out</string>
     <string name="errorLoginPassword">Wrong login or password. Or some other error</string>
     <string name="enterLoginPassword">Please enter login and password</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="channel_remote_name">Server notifications</string>
     <string name="channel_remote_description">Notifications from remote server</string>
@@ -30,4 +28,20 @@
     <string name="validation_signup_password_empty">Password should not be empty</string>
     <string name="validation_signup_name_blank">Name should not be blank</string>
     <string name="validation_signup_login_already_exists">Such login already exists</string>
+
+    <string name="posts">Posts</string>
+    <string name="events">Events</string>
+    <string name="jobs">Jobs</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="menu_posts">Posts</string>
+    <string name="menu_events">Events</string>
+    <string name="menu_jobs">Jobs</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
 </resources>
