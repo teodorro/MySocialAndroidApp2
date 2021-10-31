@@ -3,23 +3,63 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_posts">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_posts"
         android:name="com.example.mysocialandroidapp2.activity.PostsFragment"
         android:label="@string/menu_posts"
-        tools:layout="@layout/fragment_posts" />
+        tools:layout="@layout/fragment_posts" >
+        <action
+            android:id="@+id/action_nav_posts_to_regFragment"
+            app:destination="@id/regFragment" />
+        <action
+            android:id="@+id/action_nav_posts_to_authFragment"
+            app:destination="@id/authFragment" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_events"
         android:name="com.example.mysocialandroidapp2.activity.EventsFragment"
         android:label="@string/menu_events"
-        tools:layout="@layout/fragment_events" />
+        tools:layout="@layout/fragment_events" >
+        <action
+            android:id="@+id/action_nav_events_to_authFragment"
+            app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_nav_events_to_regFragment"
+            app:destination="@id/regFragment" />
+    </fragment>
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_jobs"
         android:name="com.example.mysocialandroidapp2.activity.JobsFragment"
         android:label="@string/menu_jobs"
-        tools:layout="@layout/fragment_jobs" />
+        tools:layout="@layout/fragment_jobs" >
+        <action
+            android:id="@+id/action_nav_jobs_to_regFragment"
+            app:destination="@id/regFragment" />
+        <action
+            android:id="@+id/action_nav_jobs_to_authFragment"
+            app:destination="@id/authFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/regFragment"
+        android:name="com.example.mysocialandroidapp2.activity.RegFragment"
+        android:label="fragment_reg"
+        tools:layout="@layout/fragment_reg" >
+        <action
+            android:id="@+id/action_regFragment_to_avatarFragment"
+            app:destination="@id/avatarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/avatarFragment"
+        android:name="com.example.mysocialandroidapp2.activity.AvatarFragment"
+        android:label="fragment_avatar"
+        tools:layout="@layout/fragment_avatar" />
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.example.mysocialandroidapp2.activity.AuthFragment"
+        android:label="fragment_auth"
+        tools:layout="@layout/fragment_auth" />
 </navigation>
