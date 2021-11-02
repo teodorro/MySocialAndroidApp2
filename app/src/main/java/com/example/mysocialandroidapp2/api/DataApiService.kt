@@ -14,7 +14,7 @@ interface DataApiService {
     @GET("users")
     suspend fun getUsersAll(): Response<List<User>>
 
-    @GET("users/{user_id}")
+    @GET("users/{id}")
     suspend fun getUserById(@Path("id") id: Long): Response<User>
 
     //endregion
@@ -22,14 +22,14 @@ interface DataApiService {
 
     //region AUTH
 
-    @POST("/api/users/authentication")
+    @POST("users/authentication")
     @FormUrlEncoded
     suspend fun signIn(
         @Field("login") login: String,
         @Field("pass") pass: String
     ): Response<AuthState>
 
-    @POST("/api/users/registration")
+    @POST("users/registration")
     @FormUrlEncoded
     suspend fun signUp(
         @Field("login") login: String,
@@ -37,7 +37,7 @@ interface DataApiService {
         @Field("name") name: String
     ): Response<AuthState>
 
-    @POST("/api/users/registration")
+    @POST("users/registration")
     @Multipart
     suspend fun signUpWithAvatar(
         @Part login: MultipartBody.Part,
@@ -51,6 +51,23 @@ interface DataApiService {
 
     //endregion
 
+
+    //region MEDIA
+
+    @GET("avatars/{filename}")
+    suspend fun getAvatar(@Path("filename") filename: String): Response<Any>
+
+    @GET("media/{filename}")
+    suspend fun getMedia(@Path("filename") filename: String): Response<Any>
+
+    @GET("media/{id}")
+    suspend fun getMediaById(@Path("id") id: String): Response<Any>
+
+    @Multipart
+    @POST("media")
+    suspend fun uploadMedia(@Part media: MultipartBody.Part): Response<Any>
+
+    //endregion
 
 
 }

@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.mysocialandroidapp2.databinding.FragmentPostsBinding
 import com.example.mysocialandroidapp2.viewmodel.PostsViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -32,6 +33,11 @@ class PostsFragment : Fragment() {
 
         _binding = FragmentPostsBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        binding.fab.setOnClickListener { view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show()
+        }
 
         val textView: TextView = binding.textHome
         postsViewModel.text.observe(viewLifecycleOwner, Observer {

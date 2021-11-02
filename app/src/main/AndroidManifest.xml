@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:name=".application.MainApplication"
-        android:theme="@style/Theme.MySocialAndroidApp2">
+        android:theme="@style/Theme.MySocialAndroidApp2"
+        android:usesCleartextTraffic="${usesCleartextTraffic}">
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"

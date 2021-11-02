@@ -1,5 +1,7 @@
 package com.example.mysocialandroidapp2.activity
 
+import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -19,6 +21,7 @@ import androidx.navigation.Navigation
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.auth.AppAuth
 import com.example.mysocialandroidapp2.databinding.ActivityMainBinding
+import com.example.mysocialandroidapp2.databinding.DrawerHeaderBinding
 import com.example.mysocialandroidapp2.viewmodel.AuthViewModel
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,10 +48,6 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -101,6 +100,29 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
                 Log.d(null, "Something wrong happened: ${task.exception}")
             val token = task.result
             Log.d(null, token)
+        }
+
+        // Настройка drawer header
+        var headerView = binding.navView.getHeaderView(0)
+        val headerBinding: DrawerHeaderBinding = DrawerHeaderBinding.bind(headerView)
+        authViewModel.user.observe(this){
+            if (authViewModel.authenticated) {
+                headerBinding.textViewName.text = authViewModel.user.value?.name
+            } else {
+                with(headerBinding){
+                    textViewName.text = "Not authenticated"
+                    imageViewAvatar.setImageResource(R.drawable.ic_avatar)
+                }
+            }
+        }
+
+        with(authViewModel){
+            if (authenticated) {
+                val prefs = getSharedPreferences(
+                    "auth",
+                    Context.MODE_PRIVATE)
+                initUser(prefs.getLong("id", 0))
+            }
         }
     }
 

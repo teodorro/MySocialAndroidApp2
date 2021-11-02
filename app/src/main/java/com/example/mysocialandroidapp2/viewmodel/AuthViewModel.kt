@@ -9,6 +9,7 @@ import com.example.mysocialandroidapp2.api.DataApiService
 import com.example.mysocialandroidapp2.auth.AppAuth
 import com.example.mysocialandroidapp2.auth.AuthState
 import com.example.mysocialandroidapp2.dto.MediaUpload
+import com.example.mysocialandroidapp2.dto.User
 import com.example.mysocialandroidapp2.error.ApiError
 import com.example.mysocialandroidapp2.model.PhotoModel
 import com.example.mysocialandroidapp2.util.SingleLiveEvent
@@ -53,26 +54,39 @@ class AuthViewModel @Inject constructor(
     val photo: LiveData<PhotoModel>
         get() = _photo
 
-    private val _avatarSelected = SingleLiveEvent<Unit>()
-    val avatarSelected: LiveData<Unit>
-        get() = _avatarSelected
+    private val _avatarWasSelected = SingleLiveEvent<Unit>()
+    val avatarWasSelected: LiveData<Unit>
+        get() = _avatarWasSelected
 
-    private val _defaultAvatarFile: File? = null
+    val user = auth.userFlow
+        .asLiveData(Dispatchers.Default)
 
-    init {
-
-    }
 
     fun signIn(login: String, password: String) =
         viewModelScope.launch {
-            val response = apiService.signIn(login, password)
-
-            if (!response.isSuccessful) {
+            val responseSignIn = apiService.signIn(login, password)
+            if (!responseSignIn.isSuccessful) {
                 auth.setAuth(0, "")
                 return@launch
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            val body = responseSignIn.body() ?: throw ApiError(responseSignIn.code(), responseSignIn.message())
             auth.setAuth(body.id, body.token ?: "")
+
+            initUser(body.id)
+        }
+
+    fun initUser(userId: Long) =
+        viewModelScope.launch {
+            if (userId == 0L)
+                return@launch
+            val responseUser = apiService.getUserById(userId)
+            if (responseUser.isSuccessful){
+                val body = responseUser.body() ?: throw ApiError(responseUser.code(), responseUser.message())
+                auth.setUser(body.id, body.login, body.name, body.avatar, body.authorities)
+            }
+            else{
+                auth.setUser(0, "", "", null, emptyList())
+            }
         }
 
     fun signOut() {
@@ -128,7 +142,7 @@ class AuthViewModel @Inject constructor(
 
     fun changePhoto(uri: Uri?, file: File?) {
         _photo.value = PhotoModel(uri, file)
-        _avatarSelected.value = Unit
+        _avatarWasSelected.value = Unit
     }
 
     fun validateUserData(login: String, password: String, name: String) : String {

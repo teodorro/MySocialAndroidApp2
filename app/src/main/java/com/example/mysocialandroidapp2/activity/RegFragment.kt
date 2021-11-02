@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mysocialandroidapp2.R
@@ -36,6 +37,8 @@ class RegFragment : Fragment() {
             container,
             false
         )
+
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_registration)
 
         binding.buttonSignUp.setOnClickListener {
             var login = binding.editTextLogin.text.toString().trimIndent()

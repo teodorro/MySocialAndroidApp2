@@ -1,8 +1,11 @@
 package com.example.mysocialandroidapp2.auth
 
 import android.content.Context
+import android.content.res.Resources
+import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.api.DataApiService
 import com.example.mysocialandroidapp2.dto.PushToken
+import com.example.mysocialandroidapp2.dto.User
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.EntryPoint
@@ -24,10 +27,13 @@ import javax.inject.Singleton
 class AppAuth @Inject constructor(
     @ApplicationContext private val context: Context,
 ) {
-    private val prefs = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+    private val prefs = context.getSharedPreferences(
+        "auth",
+        Context.MODE_PRIVATE)
     private val idKey = "id"
     private val tokenKey = "token"
     private val _authStateFlow: MutableStateFlow<AuthState>
+    private val _userFlow: MutableStateFlow<User>
 
     // if saved login&pass then sign in
     init{
@@ -43,9 +49,11 @@ class AppAuth @Inject constructor(
         } else{
             _authStateFlow = MutableStateFlow(AuthState(id, token))
         }
+        _userFlow = MutableStateFlow(User(0, "", "", null, emptyList()))
     }
 
     val authStateFlow: StateFlow<AuthState> = _authStateFlow.asStateFlow()
+    val userFlow: StateFlow<User> = _userFlow.asStateFlow()
 
     @Synchronized
     fun setAuth(id: Long, token: String){
@@ -66,6 +74,10 @@ class AppAuth @Inject constructor(
             commit()
         }
         sendPushToken()
+    }
+
+    fun setUser(id: Long, login: String, name: String, avatar: Any?, authorities: List<String>){
+        _userFlow.value = User(id, login, name, avatar, authorities)
     }
 
 
