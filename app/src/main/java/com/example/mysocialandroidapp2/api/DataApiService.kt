@@ -1,6 +1,7 @@
 package com.example.mysocialandroidapp2.api
 
 import com.example.mysocialandroidapp2.auth.AuthState
+import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.dto.PushToken
 import com.example.mysocialandroidapp2.dto.User
 import okhttp3.MultipartBody
@@ -66,6 +67,29 @@ interface DataApiService {
     @Multipart
     @POST("media")
     suspend fun uploadMedia(@Part media: MultipartBody.Part): Response<Any>
+
+    //endregion
+
+
+    //region POSTS
+
+    @GET("posts")
+    suspend fun getAll(): Response<List<Post>>
+
+    @GET("posts/{id}")
+    suspend fun getById(@Path("id") id: Long): Response<Post>
+
+    @POST("posts")
+    suspend fun save(@Body post: Post): Response<Post>
+
+    @POST("posts/{id}/likes")
+    suspend fun likeById(@Path("id") id: Long): Response<Post>
+
+    @DELETE("posts/{id}/likes")
+    suspend fun dislikeById(@Path("id") id: Long): Response<Post>
+
+    @DELETE("posts/{id}")
+    suspend fun removeById(@Path("id") id: Long): Response<Unit>
 
     //endregion
 
