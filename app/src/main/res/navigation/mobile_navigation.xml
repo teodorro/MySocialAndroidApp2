@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_nav_posts_to_authFragment"
             app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_nav_posts_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
     </fragment>
 
     <fragment
@@ -62,4 +65,9 @@
         android:name="com.example.mysocialandroidapp2.activity.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth" />
+    <fragment
+        android:id="@+id/newPostFragment"
+        android:name="com.example.mysocialandroidapp2.activity.NewPostFragment"
+        android:label="fragment_new_post"
+        tools:layout="@layout/fragment_new_post" />
 </navigation>

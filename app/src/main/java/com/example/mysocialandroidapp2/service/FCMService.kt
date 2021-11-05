@@ -5,6 +5,8 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.auth.AppAuth
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -12,6 +14,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.random.Random
 
 @AndroidEntryPoint
 class FCMService : FirebaseMessagingService() {
@@ -50,20 +53,20 @@ class FCMService : FirebaseMessagingService() {
     }
 
     private fun handleLike(content: Like) {
-//        val notification = NotificationCompat.Builder(this, channelId)
-//            .setSmallIcon(R.drawable.ic_notification)
-//            .setContentTitle(
-//                getString(
-//                    R.string.notification_user_liked,
-//                    content.userName,
-//                    content.postAuthor,
-//                )
-//            )
-//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//            .build()
-//
-//        NotificationManagerCompat.from(this)
-//            .notify(Random.nextInt(100_000), notification)
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle(
+                getString(
+                    R.string.notification_user_liked,
+                    content.userName,
+                    content.postAuthor,
+                )
+            )
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
+
+        NotificationManagerCompat.from(this)
+            .notify(Random.nextInt(100_000), notification)
     }
 }
 

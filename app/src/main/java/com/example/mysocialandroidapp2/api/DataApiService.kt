@@ -1,6 +1,7 @@
 package com.example.mysocialandroidapp2.api
 
 import com.example.mysocialandroidapp2.auth.AuthState
+import com.example.mysocialandroidapp2.dto.Media
 import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.dto.PushToken
 import com.example.mysocialandroidapp2.dto.User
@@ -56,17 +57,17 @@ interface DataApiService {
     //region MEDIA
 
     @GET("avatars/{filename}")
-    suspend fun getAvatar(@Path("filename") filename: String): Response<Any>
+    suspend fun getAvatar(@Path("filename") filename: String): Response<Media>
 
     @GET("media/{filename}")
-    suspend fun getMedia(@Path("filename") filename: String): Response<Any>
+    suspend fun getMedia(@Path("filename") filename: String): Response<Media>
 
     @GET("media/{id}")
-    suspend fun getMediaById(@Path("id") id: String): Response<Any>
+    suspend fun getMediaById(@Path("id") id: String): Response<Media>
 
     @Multipart
     @POST("media")
-    suspend fun uploadMedia(@Part media: MultipartBody.Part): Response<Any>
+    suspend fun uploadMedia(@Part media: MultipartBody.Part): Response<Media>
 
     //endregion
 
@@ -76,8 +77,26 @@ interface DataApiService {
     @GET("posts")
     suspend fun getAll(): Response<List<Post>>
 
+    @GET("posts/latest")
+    suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
+
+    @GET("posts/{id}/before")
+    suspend fun getBefore(
+        @Path("id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<Post>>
+
+    @GET("posts/{id}/after")
+    suspend fun getAfter(
+        @Path("id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<Post>>
+
     @GET("posts/{id}")
     suspend fun getById(@Path("id") id: Long): Response<Post>
+
+    @GET("posts/{id}/newer")
+    suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
 
     @POST("posts")
     suspend fun save(@Body post: Post): Response<Post>

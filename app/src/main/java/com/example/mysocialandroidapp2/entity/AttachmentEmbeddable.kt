@@ -1,7 +1,7 @@
 package com.example.mysocialandroidapp2.entity
 
 import com.example.mysocialandroidapp2.dto.Attachment
-import com.example.mysocialandroidapp2.enum.AttachmentType
+import com.example.mysocialandroidapp2.enumeration.AttachmentType
 
 data class AttachmentEmbeddable(
     var url: String,

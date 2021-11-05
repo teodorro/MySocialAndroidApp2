@@ -6,27 +6,15 @@ import androidx.core.net.toFile
 import androidx.core.net.toUri
 import androidx.paging.*
 import com.example.mysocialandroidapp2.api.DataApiService
-import com.example.mysocialandroidapp2.dao.PostDao
-import com.example.mysocialandroidapp2.dao.PostRemoteKeyDao
-import com.example.mysocialandroidapp2.dao.PostWorkDao
+import com.example.mysocialandroidapp2.dao.*
 import com.example.mysocialandroidapp2.db.AppDb
-import com.example.mysocialandroidapp2.dto.Attachment
-import com.example.mysocialandroidapp2.dto.Media
-import com.example.mysocialandroidapp2.dto.MediaUpload
-import com.example.mysocialandroidapp2.dto.Post
-import com.example.mysocialandroidapp2.entity.PostEntity
-import com.example.mysocialandroidapp2.entity.PostWorkEntity
-import com.example.mysocialandroidapp2.entity.toEntity
-import com.example.mysocialandroidapp2.enum.AttachmentType
-import com.example.mysocialandroidapp2.error.ApiError
-import com.example.mysocialandroidapp2.error.AppError
-import com.example.mysocialandroidapp2.error.NetworkError
-import com.example.mysocialandroidapp2.error.UnknownError
+import com.example.mysocialandroidapp2.dto.*
+import com.example.mysocialandroidapp2.entity.*
+import com.example.mysocialandroidapp2.enumeration.AttachmentType
+import com.example.mysocialandroidapp2.error.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Response
@@ -169,7 +157,7 @@ class PostRepositoryImpl @Inject constructor(
                 "file", upload.file.name, upload.file.asRequestBody()
             )
 
-            val response = apiService.upload(media)
+            val response = apiService.uploadMedia(media)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

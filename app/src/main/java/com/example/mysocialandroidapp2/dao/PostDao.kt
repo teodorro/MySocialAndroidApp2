@@ -3,7 +3,7 @@ package com.example.mysocialandroidapp2.dao
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.mysocialandroidapp2.entity.PostEntity
-import com.example.mysocialandroidapp2.enum.AttachmentType
+import com.example.mysocialandroidapp2.enumeration.AttachmentType
 import kotlinx.coroutines.flow.Flow
 
 @Dao

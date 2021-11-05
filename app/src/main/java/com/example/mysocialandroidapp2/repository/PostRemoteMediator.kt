@@ -11,6 +11,7 @@ import com.example.mysocialandroidapp2.dao.PostRemoteKeyDao
 import com.example.mysocialandroidapp2.db.AppDb
 import com.example.mysocialandroidapp2.entity.PostEntity
 import com.example.mysocialandroidapp2.entity.PostRemoteKeyEntity
+import com.example.mysocialandroidapp2.entity.toEntity
 import com.example.mysocialandroidapp2.error.ApiError
 
 @OptIn(ExperimentalPagingApi::class)
@@ -52,7 +53,7 @@ class PostRemoteMediator(
             )
 
             db.withTransaction {
-                when (loadType) {
+                when (loadType){
                     LoadType.REFRESH -> {
                         postRemoteKeyDao.insert(
                             PostRemoteKeyEntity(
