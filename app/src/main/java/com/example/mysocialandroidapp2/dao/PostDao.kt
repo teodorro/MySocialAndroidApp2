@@ -3,12 +3,7 @@ package com.example.mysocialandroidapp2.dao
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.mysocialandroidapp2.entity.PostEntity
-import com.example.mysocialandroidapp2.enumeration.AttachmentType
 import kotlinx.coroutines.flow.Flow
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
-import java.time.Instant
 
 
 @Dao
@@ -44,44 +39,3 @@ interface PostDao {
     suspend fun removeById(id: Long)
 }
 
-class Converters {
-    var gson = Gson()
-
-    @TypeConverter
-    fun toAttachmentType(value: String) = enumValueOf<AttachmentType>(value)
-    @TypeConverter
-    fun fromAttachmentType(value: AttachmentType) = value.name
-
-    @TypeConverter
-    fun stringToSetLongType(data: String?): Set<Long> {
-        if (data == null) {
-            return emptySet()
-        }
-        val setType: Type = object : TypeToken<Set<Long>>() {}.type
-        return gson.fromJson(data, setType)
-    }
-
-    @TypeConverter
-    fun fromSetLongType(data: Set<Long>): String? {
-        return gson.toJson(data)
-    }
-
-//    @TypeConverter
-//    fun toInstantType(value: Long): Instant = Instant.ofEpochMilli(value)
-//    @TypeConverter
-//    fun fromInstantType(value: Instant) = value.toEpochMilli()
-
-//    @TypeConverter
-//    fun toLikeOwnerIds(data: String?): Set<Long> {
-//        if (data == null) {
-//            return emptySet()
-//        }
-//        val setType: Type = object : TypeToken<Set<Long>>() {}.type
-//        return gson.fromJson(data, setType)
-//    }
-//
-//    @TypeConverter
-//    fun fromLikeOwnerIds(data: Set<Long>): String? {
-//        return gson.toJson(data)
-//    }
-}

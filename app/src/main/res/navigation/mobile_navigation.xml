@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_nav_posts_to_newPostFragment"
             app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_nav_posts_to_usersFragment"
+            app:destination="@id/usersFragment" />
     </fragment>
 
     <fragment
@@ -70,4 +73,8 @@
         android:name="com.example.mysocialandroidapp2.activity.NewPostFragment"
         android:label="fragment_new_post"
         tools:layout="@layout/fragment_new_post" />
+    <fragment
+        android:id="@+id/usersFragment"
+        android:name="com.example.mysocialandroidapp2.activity.UsersFragment"
+        android:label="UsersFragment" />
 </navigation>

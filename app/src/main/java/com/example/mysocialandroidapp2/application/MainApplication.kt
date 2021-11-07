@@ -2,6 +2,7 @@ package com.example.mysocialandroidapp2.application
 
 import android.app.Application
 import androidx.work.*
+import com.example.mysocialandroidapp2.auth.AppAuth
 import com.example.mysocialandroidapp2.work.RefreshPostsWorker
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
@@ -15,15 +16,22 @@ class MainApplication : Application() {
     private val appScope = CoroutineScope(Dispatchers.Default)
 
     @Inject
+    lateinit var auth: AppAuth
+    @Inject
     lateinit var workManager: WorkManager
 
 
     override fun onCreate() {
         super.onCreate()
+        setupAuth()
         setupWork()
     }
 
-
+    private fun setupAuth() {
+        appScope.launch {
+            auth.sendPushToken()
+        }
+    }
 
     private fun setupWork() {
         appScope.launch {
