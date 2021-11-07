@@ -140,7 +140,7 @@ class PostRepositoryImpl @Inject constructor(
             val media = upload(upload)
             // TODO: add support for other types
             val postWithAttachment =
-                post.copy(attachment = Attachment(media.id, AttachmentType.IMAGE))
+                post.copy(attachment = Attachment(media.url, AttachmentType.IMAGE))
             save(postWithAttachment)
         } catch (e: AppError) {
             throw e
@@ -190,7 +190,7 @@ class PostRepositoryImpl @Inject constructor(
             if (entity.uri != null) {
                 val upload = MediaUpload(Uri.parse(entity.uri).toFile())
                 val media = upload(upload)
-                post = post.copy(attachment = Attachment(media.id, AttachmentType.IMAGE))
+                post = post.copy(attachment = Attachment(media.url, AttachmentType.IMAGE))
             }
             save(post)
 

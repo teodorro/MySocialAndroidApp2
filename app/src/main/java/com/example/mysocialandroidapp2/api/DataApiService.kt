@@ -113,4 +113,30 @@ interface DataApiService {
     //endregion
 
 
+    //region WALL
+
+    @GET("my/wall/latest")
+    suspend fun getMyWallPostsLatest(@Query("count") count: Int): Response<List<Post>>
+
+    @GET("{id}/wall/latest")
+    suspend fun getWallPostsLatest(@Path("id") id: Long, @Query("count") count: Int): Response<List<Post>>
+
+    @GET("{id}/wall")
+    suspend fun getWallPosts(@Path("id") id: Long): Response<List<Post>>
+
+    @GET("{id}/wall/{wall_post_id}")
+    suspend fun getWallPostById(@Path("id") id: Long): Response<Post>
+
+    @POST("{id}/wall/{wall_post_id}/likes")
+    suspend fun likeWallPostById(@Path("id") id: Long, @Path("wall_post_id") wall_post_id: Long): Response<Post>
+
+    @DELETE("{id}/wall/{wall_post_id}/likes")
+    suspend fun dislikeWallPostById(@Path("id") id: Long, @Path("wall_post_id") wall_post_id: Long): Response<Post>
+
+    //endregion
+
+
+
+
+
 }

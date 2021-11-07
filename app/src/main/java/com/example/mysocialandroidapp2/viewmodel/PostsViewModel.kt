@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.io.File
+import java.time.Instant
 import javax.inject.Inject
 
 private val empty = Post(
@@ -34,11 +35,16 @@ private val empty = Post(
     content = "",
     author = "",
     authorId = 0,
-    ownedByMe = false,
     authorAvatar = "",
     likedByMe = false,
-    likes = 0,
-    published = ""
+//    published = Instant.now(),
+    published = Instant.now().toString(),
+    coords = null,
+    link = null,
+    mentionIds = emptySet(),
+    mentionedMe = false,
+    likeOwnerIds = emptySet(),
+    attachment = null
 )
 
 private val noPhoto = PhotoModel()
@@ -48,7 +54,7 @@ private val noPhoto = PhotoModel()
 class PostsViewModel @Inject constructor(
     private val repository: PostRepository,
     private val workManager: WorkManager,
-    appAuth: AppAuth
+    private val appAuth: AppAuth
 ) : ViewModel() {
 
     private val cached = repository
@@ -59,7 +65,8 @@ class PostsViewModel @Inject constructor(
         .flatMapLatest { (myId, _) ->
             cached.map { pagingData ->
                 pagingData.map { post ->
-                    post.copy(ownedByMe = post.authorId == myId)
+                    //TODO
+                    post.copy()//ownedByMe = post.authorId == myId)
                 }
             }
         }
@@ -151,7 +158,8 @@ class PostsViewModel @Inject constructor(
         if (edited.value?.content == text) {
             return
         }
-        edited.value = edited.value?.copy(content = text)
+//        edited.value = edited.value?.copy(content = text)
+        edited.value = edited.value?.copy(content = text, author = appAuth.userFlow.value.name, authorId = appAuth.userFlow.value.id)
     }
 
     fun likeById(id: Long) {

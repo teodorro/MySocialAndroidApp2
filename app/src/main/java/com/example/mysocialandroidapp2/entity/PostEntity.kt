@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.entity.PostEntity.Companion.fromDto
+import java.time.Instant
 
 @Entity
 data class PostEntity(
@@ -12,22 +13,36 @@ data class PostEntity(
     val id: Long,
     val authorId: Long,
     val author: String,
-    val authorAvatar: String,
+    val authorAvatar: String?,
     val content: String,
     val published: String,
+    @Embedded
+    var coords: CoordinatesEmbeddable? = null,
+    val link: String?,
+    var mentionIds: Set<Long> = mutableSetOf(),
+    val mentionedMe: Boolean = false,
+    val likeOwnerIds: Set<Long> = emptySet(),
     val likedByMe: Boolean,
-    val likes: Int = 0,
-    val wasSeen: Boolean = false,
     @Embedded
     var attachment: AttachmentEmbeddable?,
+    val wasSeen: Boolean = false,
 ) {
-    fun toDto() = Post(id, authorId, author, authorAvatar, content, published, likedByMe, likes, attachment?.toDto(),)
+    fun toDto() = Post(id, authorId, author, authorAvatar, content, published, likedByMe,
+        coords?.toDto(), link,
+        mentionIds,
+        mentionedMe,
+        likeOwnerIds,
+        attachment?.toDto())
 
-    // wasSeen всегда false
     companion object {
         fun fromDto(dto: Post, wasSeen: Boolean) =
-            PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.content, dto.published, dto.likedByMe, dto.likes, wasSeen, AttachmentEmbeddable.fromDto(dto.attachment))
-
+            PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.content, dto.published,
+                CoordinatesEmbeddable.fromDto(dto.coords), dto.link,
+                dto.mentionIds,
+                dto.mentionedMe,
+                dto.likeOwnerIds,
+                dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment),
+                wasSeen)
     }
 }
 

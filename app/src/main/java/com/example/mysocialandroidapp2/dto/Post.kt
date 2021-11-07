@@ -1,14 +1,19 @@
 package com.example.mysocialandroidapp2.dto
 
+import java.time.Instant
+
 data class Post(
     val id: Long,
     val authorId: Long,
     val author: String,
-    val authorAvatar: String,
+    val authorAvatar: String?,
     val content: String,
     val published: String,
     val likedByMe: Boolean,
-    val likes: Int = 0,
+    val coords: Coordinates? = null,
+    val link: String? = null,
+    val mentionIds: Set<Long> = emptySet(),
+    val mentionedMe: Boolean = false,
+    val likeOwnerIds: Set<Long> = emptySet(),
     val attachment: Attachment? = null,
-    val ownedByMe: Boolean = false,
 )
