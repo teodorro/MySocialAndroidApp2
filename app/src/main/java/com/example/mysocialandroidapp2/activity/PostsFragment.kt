@@ -69,7 +69,8 @@ class PostsFragment : Fragment() {
             }
 
             override fun onShowUsers(post: Post, userListType: UserListType) {
-                val listTypeBundle = bundleOf(userListType.toString() to userListType)
+                var userListType2 = UserListType.ALL // TODO
+                val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType2)
                 findNavController().navigate(R.id.action_nav_posts_to_usersFragment, listTypeBundle)
             }
         })

@@ -18,6 +18,7 @@ interface OnUserClickListener{
 class UsersAdapter(
     private val userClickListener: OnUserClickListener
 ): ListAdapter<User, UsersAdapter.UsersViewHolder>(UsersDiffCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersViewHolder {
         var binding =
             UserItemBinding.inflate(
@@ -30,8 +31,11 @@ class UsersAdapter(
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
         val item = getItem(position)
-
         holder.bind(item, userClickListener)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position;
     }
 
 
@@ -56,7 +60,6 @@ class UsersAdapter(
 
         fun bind(user: User, clickListener: OnUserClickListener){
             binding.apply {
-
 //                avatar.setImageUri(user.avatar)
                 avatar.setImageResource(R.drawable.ic_avatar) // TODO
                 username.text = user.name

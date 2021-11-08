@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface UsersRepository {
     val data: Flow<List<User>>
-//    suspend fun getUsers() : List<User>
+    suspend fun getUsers()
 }

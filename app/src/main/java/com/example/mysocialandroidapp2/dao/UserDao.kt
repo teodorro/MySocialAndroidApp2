@@ -1,8 +1,7 @@
 package com.example.mysocialandroidapp2.dao
 
-import androidx.room.Dao
-import androidx.room.Query
-import androidx.room.TypeConverter
+import androidx.room.*
+import com.example.mysocialandroidapp2.entity.PostEntity
 import com.example.mysocialandroidapp2.entity.UserEntity
 import com.example.mysocialandroidapp2.enumeration.AttachmentType
 import com.google.gson.Gson
@@ -17,5 +16,8 @@ interface UserDao {
 
     @Query("SELECT * FROM UserEntity WHERE id = :id")
     fun geBytId(id: Long): UserEntity
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(users: List<UserEntity>)
 }
 

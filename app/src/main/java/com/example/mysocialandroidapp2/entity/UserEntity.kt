@@ -2,6 +2,7 @@ package com.example.mysocialandroidapp2.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.dto.User
 
 @Entity
@@ -22,3 +23,10 @@ data class UserEntity (
 }
 
 fun List<UserEntity>.toDto(): List<User> = map(UserEntity::toDto)
+fun List<User>.toEntity(): List<UserEntity> {
+    var userEntities = mutableListOf<UserEntity>()
+    for (user in this){
+        userEntities.add(UserEntity.fromDto(user))
+    }
+    return userEntities
+}
