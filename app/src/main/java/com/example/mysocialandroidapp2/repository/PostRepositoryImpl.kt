@@ -39,11 +39,11 @@ class PostRepositoryImpl @Inject constructor(
         pagingData.map(PostEntity::toDto)
     }
 
-    override fun getNewerCount(id: Long): Flow<Int> = flow {
+    override fun getNewerCount(postId: Long): Flow<Int> = flow {
         while (true) {
             delay(5_000)
 
-            val response = apiService.getNewer(id)
+            val response = apiService.getNewer(postId)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -88,14 +88,14 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun removeById(id: Long) {
+    override suspend fun removeById(postId: Long) {
         try {
-            val response = apiService.removeById(id)
+            val response = apiService.removeById(postId)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
 
-            postDao.removeById(id)
+            postDao.removeById(postId)
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -103,16 +103,16 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun likeById(id: Long) {
+    override suspend fun likeById(postId: Long) {
         try {
-            val postResponse = apiService.getById(id)
+            val postResponse = apiService.getById(postId)
             val postBody =
                 postResponse.body() ?: throw ApiError(postResponse.code(), postResponse.message())
 
             val response: Response<Post> = if (!postBody.likedByMe) {
-                apiService.likeById(id)
+                apiService.likeById(postId)
             } else {
-                apiService.dislikeById(id)
+                apiService.dislikeById(postId)
             }
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
@@ -183,9 +183,9 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun processWork(id: Long) {
+    override suspend fun processWork(postId: Long) {
         try {// TODO: handle this in homework
-            val entity = postWorkDao.getById(id)
+            val entity = postWorkDao.getById(postId)
             var post = entity.toDto()
             if (entity.uri != null) {
                 val upload = MediaUpload(Uri.parse(entity.uri).toFile())
@@ -201,16 +201,20 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun removeWork(id: Long) {
+    override suspend fun removeWork(postId: Long) {
         try {
-            val response = apiService.removeById(id)
+            val response = apiService.removeById(postId)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            postDao.removeById(id)
+            postDao.removeById(postId)
 
         } catch (e: Exception) {
             throw UnknownError
         }
     }
+
+
+
+
 }

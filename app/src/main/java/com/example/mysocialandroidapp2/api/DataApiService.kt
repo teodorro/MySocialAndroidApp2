@@ -125,7 +125,7 @@ interface DataApiService {
     suspend fun getWallPosts(@Path("id") id: Long): Response<List<Post>>
 
     @GET("{id}/wall/{wall_post_id}")
-    suspend fun getWallPostById(@Path("id") id: Long): Response<Post>
+    suspend fun getWallPostById(@Path("id") id: Long, @Path("wall_post_id") wall_post_id: Long): Response<Post>
 
     @POST("{id}/wall/{wall_post_id}/likes")
     suspend fun likeWallPostById(@Path("id") id: Long, @Path("wall_post_id") wall_post_id: Long): Response<Post>

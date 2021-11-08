@@ -51,26 +51,17 @@ class PostsFragment : Fragment() {
                 viewModel.removeById(post.id)
             }
 
-//            override fun onShare(post: Post) {
-//                val intent = Intent().apply {
-//                    action = Intent.ACTION_SEND
-//                    putExtra(Intent.EXTRA_TEXT, post.content)
-//                    type = "text/plain"
-//                }
-//
-//                val shareIntent =
-//                    Intent.createChooser(intent, getString(R.string.chooser_share_post))
-//                startActivity(shareIntent)
-//            }
-
             override fun onShowPicAttachment(post: Post) {
                 viewModel.selectedPost.value = post
                 //findNavController().navigate(R.id.action_feedFragment_to_picFragment)
             }
 
             override fun onShowUsers(post: Post, userListType: UserListType) {
-                var userListType2 = UserListType.ALL // TODO
-                val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType2)
+                val ids = when(userListType){
+                    UserListType.LIKES -> post.likeOwnerIds
+                    UserListType.MENTIONS -> post.mentionIds
+                }
+                val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
                 findNavController().navigate(R.id.action_nav_posts_to_usersFragment, listTypeBundle)
             }
         })

@@ -8,15 +8,16 @@ import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
     val data: Flow<PagingData<Post>>
-    fun getNewerCount(id: Long): Flow<Int>
+    fun getNewerCount(postId: Long): Flow<Int>
     suspend fun getAll()
     suspend fun save(post: Post)
-    suspend fun removeById(id: Long)
-    suspend fun likeById(id: Long)
+    suspend fun removeById(postId: Long)
+    suspend fun likeById(postId: Long)
     suspend fun updateWasSeen()
     suspend fun saveWithAttachment(post: Post, upload: MediaUpload)
     suspend fun upload(upload: MediaUpload): Media
     suspend fun saveWork(post: Post, upload: MediaUpload?): Long
-    suspend fun processWork(id: Long)
-    suspend fun removeWork(id: Long)
+    suspend fun processWork(postId: Long)
+    suspend fun removeWork(postId: Long)
+
 }

@@ -18,7 +18,7 @@ class UsersViewModel @Inject constructor(
     private val repository: UsersRepository
 ) : ViewModel() {
 
-    val userIds: List<Long> = emptyList()
+    var userIds: Set<Long> = emptySet()
 
     val data: LiveData<UsersFeedModel> = repository.data
         .map { users ->
