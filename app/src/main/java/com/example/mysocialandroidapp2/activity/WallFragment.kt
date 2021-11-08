@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.adapter.OnInteractionListener
@@ -18,6 +20,7 @@ import com.example.mysocialandroidapp2.enumeration.UserListType
 import com.example.mysocialandroidapp2.viewmodel.PostsViewModel
 import com.example.mysocialandroidapp2.viewmodel.WallViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class WallFragment : Fragment() {
@@ -26,6 +29,13 @@ class WallFragment : Fragment() {
         ownerProducer = ::requireParentFragment,
     )
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            viewModel.userId = it.get(POST_ID) as Long
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,21 +43,21 @@ class WallFragment : Fragment() {
     ): View {
         val binding = FragmentWallBinding.inflate(inflater, container, false)
 
-        val adapter = WallAdapter(object : OnInteractionListener {
+        val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) {
-                viewModel.edit(post)
+//                viewModel.edit(post)
             }
 
             override fun onLike(post: Post) {
-                viewModel.likeById(post.id)
+//                viewModel.likeById(post.id)
             }
 
             override fun onRemove(post: Post) {
-                viewModel.removeById(post.id)
+//                viewModel.removeById(post.id)
             }
 
             override fun onShowPicAttachment(post: Post) {
-                viewModel.selectedPost.value = post
+//                viewModel.selectedPost.value = post
                 //findNavController().navigate(R.id.action_feedFragment_to_picFragment)
             }
 
@@ -57,10 +67,22 @@ class WallFragment : Fragment() {
                     UserListType.MENTIONS -> post.mentionIds
                 }
                 val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
-                findNavController().navigate(R.id.action_nav_posts_to_usersFragment, listTypeBundle)
+                findNavController().navigate(R.id.action_wallFragment_to_usersFragment, listTypeBundle)
             }
         })
         binding.recyclerView.adapter = adapter
+
+        binding.swiperefresh.setOnRefreshListener {
+            viewModel.refreshPosts()
+            adapter.refresh()
+        }
+
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.data.collectLatest(adapter::submitData)
+        }
+
+
 
         return binding.root
     }

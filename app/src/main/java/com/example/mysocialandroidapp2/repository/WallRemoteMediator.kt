@@ -20,9 +20,9 @@ class WallRemoteMediator(
     private val db: AppDb,
     private val postDao: PostDao,
     private val postRemoteKeyDao: PostRemoteKeyDao,
+    private val userId: Long
 ) : RemoteMediator<Int, PostEntity>() {
 
-    var userId = 0L
 
     override suspend fun load(
         loadType: LoadType,
@@ -31,7 +31,10 @@ class WallRemoteMediator(
         try {
             val response = when (loadType) {
                 LoadType.REFRESH -> {
-                    service.getWallPostsLatest(userId, state.config.initialLoadSize)
+                    if (state.firstItemOrNull() != null) {
+                        service.getAfter(state.firstItemOrNull()!!.id, state.config.pageSize)
+                    } else
+                        service.getLatest(state.config.initialLoadSize)
                 }
                 LoadType.PREPEND -> {
                     return MediatorResult.Success(endOfPaginationReached = true)

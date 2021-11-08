@@ -23,15 +23,28 @@ import javax.inject.Singleton
 class WallRepositoryImpl @Inject constructor(
     private val postDao: PostDao,
     private val postWorkDao: PostWorkDao,
-    appDb: AppDb,
-    postRemoteKeyDao: PostRemoteKeyDao,
+    private val appDb: AppDb,
+    private val postRemoteKeyDao: PostRemoteKeyDao,
     private val apiService: DataApiService,
     ): WallRepository {
 
-    @OptIn(ExperimentalPagingApi::class)
-    override val data: Flow<PagingData<Post>> = Pager(
+    @ExperimentalPagingApi
+    override var userId: Long = 0
+    set(value) {
+        field = value
+        data = Pager(
         config = PagingConfig(pageSize = 5, enablePlaceholders = false),
-        remoteMediator = WallRemoteMediator(apiService, appDb, postDao, postRemoteKeyDao),
+        remoteMediator = WallRemoteMediator(apiService, appDb, postDao, postRemoteKeyDao, value),
+        pagingSourceFactory = postDao::pagingSource,
+        ).flow.map { pagingData ->
+            pagingData.map(PostEntity::toDto)
+        }
+    }
+
+    @OptIn(ExperimentalPagingApi::class)
+    override var data: Flow<PagingData<Post>> = Pager(
+        config = PagingConfig(pageSize = 5, enablePlaceholders = false),
+        remoteMediator = WallRemoteMediator(apiService, appDb, postDao, postRemoteKeyDao, userId),
         pagingSourceFactory = postDao::pagingSource,
     ).flow.map { pagingData ->
         pagingData.map(PostEntity::toDto)
@@ -79,6 +92,13 @@ class WallRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun clearLocalTable() {
+        try{
+            postDao.removeAll()
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
 
 
 }
