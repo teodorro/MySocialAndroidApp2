@@ -34,6 +34,9 @@ class WallViewModel @Inject constructor(
             repository.clearLocalTable()
         }
         repository.userId = value
+        viewModelScope.launch {
+            repository.getAllPosts(userId)
+        }
     }
 
     private val cached = repository
