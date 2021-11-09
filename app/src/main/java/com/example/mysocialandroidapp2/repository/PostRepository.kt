@@ -19,5 +19,6 @@ interface PostRepository {
     suspend fun saveWork(post: Post, upload: MediaUpload?): Long
     suspend fun processWork(postId: Long)
     suspend fun removeWork(postId: Long)
+    suspend fun clearLocalTable()
 
 }

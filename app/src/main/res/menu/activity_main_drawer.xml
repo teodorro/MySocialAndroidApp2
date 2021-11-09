@@ -6,8 +6,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_posts"
-            android:icon="@drawable/ic_baseline_message_24"
+            android:icon="@drawable/ic_baseline_dynamic_feed_24"
             android:title="@string/menu_posts" />
+        <item
+            android:id="@+id/wallFragment"
+            android:icon="@drawable/ic_baseline_message_24"
+            android:title="@string/menu_wall" />
         <item
             android:id="@+id/nav_events"
             android:icon="@drawable/ic_baseline_calendar_today_24"

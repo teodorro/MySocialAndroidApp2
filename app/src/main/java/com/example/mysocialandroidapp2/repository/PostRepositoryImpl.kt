@@ -214,7 +214,13 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-
+    override suspend fun clearLocalTable() {
+        try{
+            postDao.removeAll()
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
 
 
 }

@@ -24,7 +24,7 @@ import javax.inject.Inject
 class WallViewModel @Inject constructor(
     private val repository: WallRepository,
     private val workManager: WorkManager,
-    private val appAuth: AppAuth
+    val appAuth: AppAuth
 ) : ViewModel() {
 
     var userId: Long = 0

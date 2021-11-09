@@ -50,6 +50,21 @@
             app:destination="@id/authFragment" />
     </fragment>
     <fragment
+        android:id="@+id/wallFragment"
+        android:name="com.example.mysocialandroidapp2.activity.WallFragment"
+        android:label="fragment_wall"
+        tools:layout="@layout/fragment_wall" >
+        <action
+            android:id="@+id/action_wallFragment_to_usersFragment"
+            app:destination="@id/usersFragment" />
+        <action
+            android:id="@+id/action_wallFragment_to_authFragment"
+            app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_wallFragment_to_regFragment"
+            app:destination="@id/regFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/regFragment"
         android:name="com.example.mysocialandroidapp2.activity.RegFragment"
         android:label="fragment_reg"
@@ -80,14 +95,5 @@
         <action
             android:id="@+id/action_usersFragment_to_wallFragment"
             app:destination="@id/wallFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/wallFragment"
-        android:name="com.example.mysocialandroidapp2.activity.WallFragment"
-        android:label="fragment_wall"
-        tools:layout="@layout/fragment_wall" >
-        <action
-            android:id="@+id/action_wallFragment_to_usersFragment"
-            app:destination="@id/usersFragment" />
     </fragment>
 </navigation>

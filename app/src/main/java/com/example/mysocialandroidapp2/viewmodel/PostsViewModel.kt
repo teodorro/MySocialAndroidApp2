@@ -71,14 +71,6 @@ class PostsViewModel @Inject constructor(
             }
         }
 
-//    val data: Flow<PagingData<Post>> = appAuth.authStateFlow
-//        .flatMapLatest { (myId, _) ->
-//            repository.data.map { pagingData ->
-//                pagingData.map { post ->
-//                    post.copy(ownedByMe = post.authorId == myId)
-//                }
-//            }
-//        }
 
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
@@ -212,4 +204,17 @@ class PostsViewModel @Inject constructor(
     fun changePhoto(uri: Uri?, file: File?) {
         _photo.value = PhotoModel(uri, file)
     }
+
+    fun clearLocalTable(){
+        viewModelScope.launch {
+            try {
+                _dataState.value = FeedModelState(loading = true)
+                repository.clearLocalTable()
+                _dataState.value = FeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
+    }
+
 }

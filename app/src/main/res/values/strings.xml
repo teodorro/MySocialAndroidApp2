@@ -36,6 +36,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="menu_posts">Posts</string>
+    <string name="menu_wall">Wall</string>
     <string name="menu_events">Events</string>
     <string name="menu_jobs">Jobs</string>
 

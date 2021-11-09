@@ -6,24 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.adapter.OnInteractionListener
 import com.example.mysocialandroidapp2.adapter.PostsAdapter
-import com.example.mysocialandroidapp2.databinding.FragmentPostsBinding
 import com.example.mysocialandroidapp2.databinding.FragmentWallBinding
 import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.enumeration.UserListType
-import com.example.mysocialandroidapp2.viewmodel.PostsViewModel
 import com.example.mysocialandroidapp2.viewmodel.WallViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class WallFragment : Fragment() {
+
+    private var wasCalledFromMenu: Boolean = true
 
     private val viewModel: WallViewModel by viewModels(
         ownerProducer = ::requireParentFragment,
@@ -33,6 +32,8 @@ class WallFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             viewModel.userId = it.get(POST_ID) as Long
+            if (arguments != null)
+                wasCalledFromMenu = false
         }
     }
 
@@ -42,6 +43,9 @@ class WallFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentWallBinding.inflate(inflater, container, false)
+        if (wasCalledFromMenu )
+            viewModel.userId = viewModel.appAuth.userFlow.value.id
+        wasCalledFromMenu = true
 
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) {
