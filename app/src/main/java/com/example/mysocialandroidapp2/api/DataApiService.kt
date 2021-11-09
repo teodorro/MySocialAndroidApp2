@@ -1,10 +1,7 @@
 package com.example.mysocialandroidapp2.api
 
 import com.example.mysocialandroidapp2.auth.AuthState
-import com.example.mysocialandroidapp2.dto.Media
-import com.example.mysocialandroidapp2.dto.Post
-import com.example.mysocialandroidapp2.dto.PushToken
-import com.example.mysocialandroidapp2.dto.User
+import com.example.mysocialandroidapp2.dto.*
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -136,6 +133,21 @@ interface DataApiService {
     //endregion
 
 
+    //region JOB
+
+    @GET("{id}/jobs")
+    suspend fun getJobs(@Path("id") id: Long): Response<List<Job>>
+
+    @GET("my/jobs")
+    suspend fun getMyJobs(): Response<List<Job>>
+
+    @POST("my/jobs")
+    suspend fun save(@Body job: Job): Response<Job>
+
+    @DELETE("my/jobs/{id}")
+    suspend fun delete(@Path("id") id: Long): Response<Job>
+
+    //endregion
 
 
 

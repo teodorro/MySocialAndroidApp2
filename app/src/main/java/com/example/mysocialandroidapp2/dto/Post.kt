@@ -1,7 +1,5 @@
 package com.example.mysocialandroidapp2.dto
 
-import java.time.Instant
-
 data class Post(
     val id: Long,
     val authorId: Long,
