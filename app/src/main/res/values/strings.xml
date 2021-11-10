@@ -66,6 +66,12 @@
     <string name="post_text">Post Text</string>
     <string name="users">Users</string>
 
+    <string name="position">Position</string>
+    <string name="start">Start</string>
+    <string name="finish">Finish</string>
+    <string name="link">Link</string>
+    <string name="create_job">Create</string>
+
     <string name="retry_loading">Retry</string>
     <string name="empty_posts">There are no posts.\nIf you create a new post, it will appear here</string>
     <string name="error_loading">Error loading data</string>

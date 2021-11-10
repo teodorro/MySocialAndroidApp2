@@ -184,7 +184,7 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun processWork(postId: Long) {
-        try {// TODO: handle this in homework
+        try {
             val entity = postWorkDao.getById(postId)
             var post = entity.toDto()
             if (entity.uri != null) {

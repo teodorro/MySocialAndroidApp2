@@ -8,4 +8,6 @@ interface JobsRepository {
     suspend fun getJobs(userId: Long)
     suspend fun save(job: Job)
     suspend fun remove(jobId: Long)
+    suspend fun processWork(jobId: Long)
+    suspend fun removeWork(jobId: Long)
 }

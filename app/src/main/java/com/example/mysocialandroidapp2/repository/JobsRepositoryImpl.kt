@@ -1,17 +1,16 @@
 package com.example.mysocialandroidapp2.repository
 
+import android.util.Log
 import com.example.mysocialandroidapp2.api.DataApiService
 import com.example.mysocialandroidapp2.dao.JobDao
 import com.example.mysocialandroidapp2.dto.Job
 import com.example.mysocialandroidapp2.entity.JobEntity
-import com.example.mysocialandroidapp2.entity.PostEntity
 import com.example.mysocialandroidapp2.entity.toDto
 import com.example.mysocialandroidapp2.entity.toEntity
 import com.example.mysocialandroidapp2.error.ApiError
 import com.example.mysocialandroidapp2.error.NetworkError
 import com.example.mysocialandroidapp2.error.UnknownError
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import java.io.IOException
@@ -40,7 +39,7 @@ class JobsRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
-            throw com.example.mysocialandroidapp2.error.UnknownError
+            throw UnknownError
         }
     }
 
@@ -70,6 +69,32 @@ class JobsRepositoryImpl @Inject constructor(
             jobDao.removeById(jobId)
         } catch (e: IOException) {
             throw NetworkError
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun processWork(jobId: Long) {
+        try {
+            val entity = jobDao.getById(jobId)
+            var job = entity.toDto()
+            save(job)
+
+            Log.d(null, entity.id.toString())
+            Log.d(null, job.id.toString())
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun removeWork(jobId: Long) {
+        try {
+            val response = apiService.removeJobById(jobId)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            jobDao.removeById(jobId)
+
         } catch (e: Exception) {
             throw UnknownError
         }
