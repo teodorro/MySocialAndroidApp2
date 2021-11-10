@@ -29,9 +29,9 @@ class PostRemoteMediator(
             val response = when (loadType) {
                 LoadType.REFRESH -> {
                     if (state.firstItemOrNull() != null) {
-                        service.getAfter(state.firstItemOrNull()!!.id, state.config.pageSize)
+                        service.getPostsAfter(state.firstItemOrNull()!!.id, state.config.pageSize)
                     } else
-                        service.getLatest(state.config.initialLoadSize)
+                        service.getPostsLatest(state.config.initialLoadSize)
                 }
                 LoadType.PREPEND -> {
                     return MediatorResult.Success(endOfPaginationReached = true)
@@ -40,7 +40,7 @@ class PostRemoteMediator(
                     val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(
                         endOfPaginationReached = false
                     )
-                    service.getBefore(id, state.config.pageSize)
+                    service.getPostsBefore(id, state.config.pageSize)
                 }
             }
 

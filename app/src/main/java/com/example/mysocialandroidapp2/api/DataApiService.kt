@@ -72,31 +72,31 @@ interface DataApiService {
     //region POSTS
 
     @GET("posts")
-    suspend fun getAll(): Response<List<Post>>
+    suspend fun getPostsAll(): Response<List<Post>>
 
     @GET("posts/latest")
-    suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
+    suspend fun getPostsLatest(@Query("count") count: Int): Response<List<Post>>
 
     @GET("posts/{id}/before")
-    suspend fun getBefore(
+    suspend fun getPostsBefore(
         @Path("id") id: Long,
         @Query("count") count: Int
     ): Response<List<Post>>
 
     @GET("posts/{id}/after")
-    suspend fun getAfter(
+    suspend fun getPostsAfter(
         @Path("id") id: Long,
         @Query("count") count: Int
     ): Response<List<Post>>
 
     @GET("posts/{id}")
-    suspend fun getById(@Path("id") id: Long): Response<Post>
+    suspend fun getPostById(@Path("id") id: Long): Response<Post>
 
     @GET("posts/{id}/newer")
-    suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
+    suspend fun getPostsNewer(@Path("id") id: Long): Response<List<Post>>
 
     @POST("posts")
-    suspend fun save(@Body post: Post): Response<Post>
+    suspend fun savePosts(@Body post: Post): Response<Post>
 
     @POST("posts/{id}/likes")
     suspend fun likeById(@Path("id") id: Long): Response<Post>
@@ -105,7 +105,7 @@ interface DataApiService {
     suspend fun dislikeById(@Path("id") id: Long): Response<Post>
 
     @DELETE("posts/{id}")
-    suspend fun removeById(@Path("id") id: Long): Response<Unit>
+    suspend fun removePostById(@Path("id") id: Long): Response<Unit>
 
     //endregion
 
@@ -142,10 +142,10 @@ interface DataApiService {
     suspend fun getMyJobs(): Response<List<Job>>
 
     @POST("my/jobs")
-    suspend fun save(@Body job: Job): Response<Job>
+    suspend fun saveJob(@Body job: Job): Response<Job>
 
     @DELETE("my/jobs/{id}")
-    suspend fun delete(@Path("id") id: Long): Response<Job>
+    suspend fun removeJobById(@Path("id") id: Long): Response<Job>
 
     //endregion
 

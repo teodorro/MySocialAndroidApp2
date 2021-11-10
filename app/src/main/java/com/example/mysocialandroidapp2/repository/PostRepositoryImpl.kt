@@ -43,7 +43,7 @@ class PostRepositoryImpl @Inject constructor(
         while (true) {
             delay(5_000)
 
-            val response = apiService.getNewer(postId)
+            val response = apiService.getPostsNewer(postId)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -57,7 +57,7 @@ class PostRepositoryImpl @Inject constructor(
     override suspend fun getAll() {
         try {
             // получить все посты с сервера
-            val response = apiService.getAll()
+            val response = apiService.getPostsAll()
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -74,7 +74,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun save(post: Post) {
         try {
-            val response = apiService.save(post)
+            val response = apiService.savePosts(post)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -90,7 +90,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun removeById(postId: Long) {
         try {
-            val response = apiService.removeById(postId)
+            val response = apiService.removePostById(postId)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -105,7 +105,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun likeById(postId: Long) {
         try {
-            val postResponse = apiService.getById(postId)
+            val postResponse = apiService.getPostById(postId)
             val postBody =
                 postResponse.body() ?: throw ApiError(postResponse.code(), postResponse.message())
 
@@ -203,7 +203,7 @@ class PostRepositoryImpl @Inject constructor(
 
     override suspend fun removeWork(postId: Long) {
         try {
-            val response = apiService.removeById(postId)
+            val response = apiService.removePostById(postId)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

@@ -57,7 +57,7 @@ class WallViewModel @Inject constructor(
             cached.map { pagingData ->
                 pagingData.map { post ->
                     //TODO
-                    post.copy()//ownedByMe = post.authorId == myId)
+                    post.copy()
                 }
             }
         }
