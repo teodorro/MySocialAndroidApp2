@@ -16,7 +16,7 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="parent" />-->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/avatar"
+        android:id="@+id/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/common_spacing"
@@ -37,8 +37,8 @@
         android:paddingLeft="@dimen/common_spacing"
         android:paddingTop="14dp"
         android:text="@string/name"
-        app:layout_constraintLeft_toRightOf="@+id/avatar"
-        app:layout_constraintBottom_toBottomOf="jobname" />
+        app:layout_constraintLeft_toRightOf="@+id/menu"
+        app:layout_constraintBottom_toBottomOf="@+id/jobname" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/jobname"
@@ -63,7 +63,7 @@
         android:paddingLeft="@dimen/common_spacing"
         android:paddingTop="4dp"
         android:text="@string/position"
-        app:layout_constraintLeft_toRightOf="@+id/avatar"
+        app:layout_constraintLeft_toRightOf="@+id/menu"
         app:layout_constraintBottom_toBottomOf="@+id/position" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -89,7 +89,7 @@
         android:paddingLeft="@dimen/common_spacing"
         android:paddingTop="4dp"
         android:text="@string/start"
-        app:layout_constraintLeft_toRightOf="@+id/avatar"
+        app:layout_constraintLeft_toRightOf="@+id/menu"
         app:layout_constraintBottom_toBottomOf="@+id/start" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -139,7 +139,7 @@
         android:paddingLeft="@dimen/common_spacing"
         android:paddingTop="4dp"
         android:text="@string/link"
-        app:layout_constraintLeft_toRightOf="@+id/avatar"
+        app:layout_constraintLeft_toRightOf="@+id/menu"
         app:layout_constraintBottom_toBottomOf="@+id/link" />
 
     <com.google.android.material.textview.MaterialTextView

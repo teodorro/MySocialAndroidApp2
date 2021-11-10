@@ -73,8 +73,7 @@ class PostsAdapter(
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {
                         inflate(R.menu.options_post)
-                        // TODO
-                        menu.setGroupVisible(R.id.owned, true)//post.ownedByMe)
+                        menu.setGroupVisible(R.id.owned, true)
 
                         setOnMenuItemClickListener { item ->
                             when (item.itemId) {

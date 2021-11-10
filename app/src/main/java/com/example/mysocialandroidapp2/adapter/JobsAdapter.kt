@@ -2,30 +2,37 @@ package com.example.mysocialandroidapp2.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ListAdapter
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.databinding.JobItemBinding
-import com.example.mysocialandroidapp2.databinding.UserItemBinding
 import com.example.mysocialandroidapp2.dto.Job
+import java.time.Instant
 
-class JobsAdapter()
+
+interface OnJobInteractionListener {
+    fun onRemove(job: Job) {}
+}
+
+class JobsAdapter(
+    private val onJobInteractionListener: OnJobInteractionListener)
     : ListAdapter<Job, JobsAdapter.JobsViewHolder>(JobsDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobsAdapter.JobsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobsViewHolder {
         var binding =
-            UserItemBinding.inflate(
+            JobItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-        return JobsAdapter.JobsViewHolder(binding)
+        return JobsViewHolder(binding, onJobInteractionListener)
     }
 
-    override fun onBindViewHolder(holder: JobsAdapter.JobsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: JobsViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, userClickListener)
+        holder.bind(item)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -47,20 +54,39 @@ class JobsAdapter()
 
     class JobsViewHolder(
         private val binding: JobItemBinding,
+        private val onJobInteractionListener: OnJobInteractionListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        var userId: Long = -1
+        var jobId: Long = -1
 
-        fun bind(job: Job, clickListener: OnUserClickListener){
+        fun bind(job: Job){
             binding.apply {
-//                avatar.setImageUri(user.avatar)
-                avatar.setImageResource(R.drawable.ic_avatar) // TODO
-                username.text = user.name
-                userId = user.id
-            }
+                jobname.text = job.name
+                position.text = job.position
+                start.text = Instant.ofEpochSecond(job.start).toString()
+                if (job.finish != null)
+                    finish.text = Instant.ofEpochSecond(job.finish).toString()
+                else
+                    finish.text = ""
+                link.text = job.link
 
-            itemView.setOnClickListener {
-                clickListener.onUserClicked(user)
+                jobId = job.id
+
+                menu.setOnClickListener {
+                    PopupMenu(it.context, it).apply {
+                        inflate(R.menu.options_job)
+                        menu.setGroupVisible(R.id.owned, true)
+                        setOnMenuItemClickListener { item ->
+                            when (item.itemId) {
+                                R.id.remove -> {
+                                    onJobInteractionListener.onRemove(job)
+                                    true
+                                }
+                                else -> false
+                            }
+                        }
+                    }
+                }
             }
         }
     }
