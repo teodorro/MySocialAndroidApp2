@@ -4,22 +4,18 @@ import androidx.lifecycle.*
 import androidx.work.*
 import com.example.mysocialandroidapp2.auth.AppAuth
 import com.example.mysocialandroidapp2.dto.Job
-import com.example.mysocialandroidapp2.dto.MediaUpload
-import com.example.mysocialandroidapp2.model.FeedModelState
 import com.example.mysocialandroidapp2.model.JobsFeedModel
 import com.example.mysocialandroidapp2.model.JobsFeedModelState
 import com.example.mysocialandroidapp2.repository.JobsRepository
 import com.example.mysocialandroidapp2.util.SingleLiveEvent
 import com.example.mysocialandroidapp2.work.RemoveJobWorker
-import com.example.mysocialandroidapp2.work.RemovePostWorker
 import com.example.mysocialandroidapp2.work.SaveJobWorker
-import com.example.mysocialandroidapp2.work.SavePostWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-private val empty = Job(
+val emptyJob = Job(
     id = 0,
     name = "",
     position = "",
@@ -37,7 +33,10 @@ class JobsViewModel @Inject constructor(
 
     var userId: Long = 0
 
-    private val edited = MutableLiveData(empty)
+    private val _edited = MutableLiveData(emptyJob)
+    val edited: LiveData<Job>
+        get() = _edited
+
     private val _jobCreated = SingleLiveEvent<Unit>()
     val jobCreated: LiveData<Unit>
         get() = _jobCreated
@@ -60,13 +59,16 @@ class JobsViewModel @Inject constructor(
 
     fun loadJobs() = viewModelScope.launch {
         try {
+            _dataState.value = JobsFeedModelState(loading = true)
             repository.getJobs(userId)
+            _dataState.value = JobsFeedModelState()
         } catch (e: Exception) {
+            _dataState.value = JobsFeedModelState(error = true)
         }
     }
 
     fun save() {
-        edited.value?.let {
+        _edited.value?.let {
             _jobCreated.value = Unit
             viewModelScope.launch {
                 try {
@@ -87,7 +89,7 @@ class JobsViewModel @Inject constructor(
                 }
             }
         }
-        edited.value = empty
+        _edited.value = emptyJob
     }
 
     fun removeById(id: Long) {
@@ -110,5 +112,40 @@ class JobsViewModel @Inject constructor(
                 _dataState.value = JobsFeedModelState(error = true)
             }
         }
+    }
+
+    fun edit(job: Job) {
+        _edited.value = job
+    }
+
+    fun changeContent(
+        name: String,
+        position: String,
+        start: String,
+        finish: String,
+        link: String,
+    ) {
+        val name = name.trim()
+        val position = position.trim()
+        val start = start.trim().toLong()
+        val finish = finish.trim()?.toLong()
+        val link = link.trim()
+        if (
+            _edited.value?.name == name
+            && _edited.value?.position == position
+            && _edited.value?.start == start
+            && _edited.value?.finish == finish
+            && _edited.value?.link == link
+        ) {
+            return
+        }
+
+        _edited.value = _edited.value?.copy(
+            name = name,
+            position = position,
+            start = start,
+            finish = finish,
+            link = link
+        )
     }
 }

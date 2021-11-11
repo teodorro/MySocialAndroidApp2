@@ -1,60 +1,99 @@
 package com.example.mysocialandroidapp2.activity
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.mysocialandroidapp2.R
+import com.example.mysocialandroidapp2.databinding.FragmentNewJobBinding
+import com.example.mysocialandroidapp2.util.AndroidUtils
+import com.example.mysocialandroidapp2.viewmodel.JobsViewModel
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [NewJobFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class NewJobFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private val viewModel: JobsViewModel by viewModels(
+        ownerProducer = ::requireParentFragment,
+    )
+
+    private var fragmentBinding: FragmentNewJobBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_new_post, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.save -> {
+                fragmentBinding?.let {
+                    viewModel.changeContent(
+                        it.editTextName.text.toString(),
+                        it.editTextPosition.text.toString(),
+                        it.editTextStart.text.toString(),
+                        it.editTextFinish.text.toString(),
+                        it.editTextLink.text.toString(),
+                    )
+
+                    viewModel.save()
+                    AndroidUtils.hideKeyboard(requireView())
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_job, container, false)
+        val binding = FragmentNewJobBinding.inflate(
+            inflater,
+            container,
+            false
+        )
+        fragmentBinding = binding
+
+        binding.editTextName.setText(viewModel.edited.value?.name)
+        binding.editTextPosition.setText(viewModel.edited.value?.position)
+        binding.editTextStart.setText(viewModel.edited.value?.start.toString())
+        binding.editTextFinish.setText(viewModel.edited.value?.finish.toString())
+        binding.editTextLink.setText(viewModel.edited.value?.link)
+
+        viewModel.jobCreated.observe(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NewJobFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NewJobFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == ImagePicker.RESULT_ERROR) {
+            fragmentBinding?.let {
+                Snackbar.make(it.root, ImagePicker.getError(data), Snackbar.LENGTH_LONG).show()
             }
+            return
+        }
     }
+
+    override fun onDestroyView() {
+        fragmentBinding = null
+        super.onDestroyView()
+    }
+
 }

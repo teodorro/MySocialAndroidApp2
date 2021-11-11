@@ -66,6 +66,7 @@
     <string name="post_text">Post Text</string>
     <string name="users">Users</string>
 
+    <string name="description_job_menu">Job menu</string>
     <string name="position">Position</string>
     <string name="start">Start</string>
     <string name="finish">Finish</string>

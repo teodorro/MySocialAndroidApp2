@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_nav_jobs_to_authFragment"
             app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_nav_jobs_to_newJobFragment"
+            app:destination="@id/newJobFragment" />
     </fragment>
     <fragment
         android:id="@+id/wallFragment"
@@ -96,4 +99,9 @@
             android:id="@+id/action_usersFragment_to_wallFragment"
             app:destination="@id/wallFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newJobFragment"
+        android:name="com.example.mysocialandroidapp2.activity.NewJobFragment"
+        android:label="fragment_new_job"
+        tools:layout="@layout/fragment_new_job" />
 </navigation>

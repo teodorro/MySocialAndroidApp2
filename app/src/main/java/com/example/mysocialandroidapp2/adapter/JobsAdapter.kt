@@ -3,6 +3,8 @@ package com.example.mysocialandroidapp2.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -14,6 +16,7 @@ import java.time.Instant
 
 interface OnJobInteractionListener {
     fun onRemove(job: Job) {}
+    fun onEdit(job: Job) {}
 }
 
 class JobsAdapter(
@@ -82,10 +85,14 @@ class JobsAdapter(
                                     onJobInteractionListener.onRemove(job)
                                     true
                                 }
+                                R.id.edit -> {
+                                    onJobInteractionListener.onEdit(job)
+                                    true
+                                }
                                 else -> false
                             }
                         }
-                    }
+                    }.show()
                 }
             }
         }
