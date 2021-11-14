@@ -29,7 +29,7 @@ class UsersRepositoryImpl @Inject constructor(
 
     override suspend fun getUsers() {
         try {
-            // получить все посты с сервера
+            // получить всех пользователей с сервера
             val response = apiService.getUsersAll()
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())

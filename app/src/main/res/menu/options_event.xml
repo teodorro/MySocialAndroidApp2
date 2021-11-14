@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/owned">
+        <item
+            android:id="@+id/edit"
+            android:title="@string/menu_edit" />
+        <item
+            android:id="@+id/remove"
+            android:title="@string/menu_remove" />
+        <item
+            android:id="@+id/likes"
+            android:title="@string/menu_likes" />
+        <item
+            android:id="@+id/speakers"
+            android:title="@string/menu_speakers" />
+        <item
+            android:id="@+id/participants"
+            android:title="@string/menu_participants" />
+    </group>
+</menu>

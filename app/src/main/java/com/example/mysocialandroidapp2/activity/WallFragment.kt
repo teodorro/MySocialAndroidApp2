@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.mysocialandroidapp2.R
-import com.example.mysocialandroidapp2.adapter.OnInteractionListener
+import com.example.mysocialandroidapp2.adapter.OnPostInteractionListener
 import com.example.mysocialandroidapp2.adapter.PostsAdapter
 import com.example.mysocialandroidapp2.databinding.FragmentWallBinding
 import com.example.mysocialandroidapp2.dto.Post
@@ -47,7 +47,7 @@ class WallFragment : Fragment() {
             viewModel.userId = viewModel.appAuth.userFlow.value.id
         wasCalledFromMenu = true
 
-        val adapter = PostsAdapter(object : OnInteractionListener {
+        val adapter = PostsAdapter(object : OnPostInteractionListener {
             override fun onEdit(post: Post) {
 //                viewModel.edit(post)
             }
@@ -69,6 +69,7 @@ class WallFragment : Fragment() {
                 val ids = when(userListType){
                     UserListType.LIKES -> post.likeOwnerIds
                     UserListType.MENTIONS -> post.mentionIds
+                    else -> emptySet()
                 }
                 val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
                 findNavController().navigate(R.id.action_wallFragment_to_usersFragment, listTypeBundle)

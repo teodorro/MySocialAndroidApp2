@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.example.mysocialandroidapp2.R
-import com.example.mysocialandroidapp2.adapter.OnInteractionListener
+import com.example.mysocialandroidapp2.adapter.OnPostInteractionListener
 import com.example.mysocialandroidapp2.adapter.PostsAdapter
 import com.example.mysocialandroidapp2.databinding.FragmentPostsBinding
 import com.example.mysocialandroidapp2.dto.Post
@@ -40,7 +40,7 @@ class PostsFragment : Fragment() {
 
         viewModel.clearLocalTable()
 
-        val adapter = PostsAdapter(object : OnInteractionListener {
+        val adapter = PostsAdapter(object : OnPostInteractionListener {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
             }
@@ -62,6 +62,7 @@ class PostsFragment : Fragment() {
                 val ids = when(userListType){
                     UserListType.LIKES -> post.likeOwnerIds
                     UserListType.MENTIONS -> post.mentionIds
+                    else -> emptySet()
                 }
                 val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
                 findNavController().navigate(R.id.action_nav_posts_to_usersFragment, listTypeBundle)

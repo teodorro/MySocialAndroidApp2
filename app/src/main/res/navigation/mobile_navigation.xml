@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_nav_events_to_regFragment"
             app:destination="@id/regFragment" />
+        <action
+            android:id="@+id/action_nav_events_to_usersFragment"
+            app:destination="@id/usersFragment" />
     </fragment>
 
     <fragment

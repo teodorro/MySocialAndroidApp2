@@ -150,5 +150,36 @@ interface DataApiService {
     //endregion
 
 
+    //region EVENT
+
+    @GET("events/latest")
+    suspend fun getEventsLatest(@Query("count") count: Int): Response<List<Event>>
+
+    @GET("events")
+    suspend fun getEvents(): Response<List<Event>>
+
+    @POST("events")
+    suspend fun saveEvent(@Body event: Event): Response<Event>
+
+    @DELETE("events/{id}")
+    suspend fun removeEventById(@Path("id") id: Long): Response<Event>
+
+    @GET("events/{id}")
+    suspend fun getEventById(@Path("id") id: Long): Response<Event>
+
+    @POST("events/{id}/likes")
+    suspend fun likeEventById(@Path("id") id: Long): Response<Event>
+
+    @DELETE("events/{id}/likes")
+    suspend fun dislikeEventById(@Path("id") id: Long): Response<Event>
+
+    @POST("events/{id}/participants")
+    suspend fun participateEventById(@Path("id") id: Long): Response<Event>
+
+    @DELETE("events/{id}/participants")
+    suspend fun withdrawEventById(@Path("id") id: Long): Response<Event>
+
+    //endregion
+
 
 }

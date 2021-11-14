@@ -61,6 +61,8 @@
     <string name="menu_remove">Remove</string>
     <string name="menu_likes">Likes</string>
     <string name="menu_mentions">Mentions</string>
+    <string name="menu_speakers">Speakers</string>
+    <string name="menu_participants">Participants</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_save">Save</string>
     <string name="post_text">Post Text</string>
@@ -72,6 +74,7 @@
     <string name="finish">Finish</string>
     <string name="link">Link</string>
     <string name="create_job">Create</string>
+    <string name="datetime">Datetime</string>
 
     <string name="retry_loading">Retry</string>
     <string name="empty_posts">There are no posts.\nIf you create a new post, it will appear here</string>
