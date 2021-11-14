@@ -87,7 +87,7 @@ class WallFragment : Fragment() {
             viewModel.data.collectLatest(adapter::submitData)
         }
 
-
+        adapter.refresh()
 
         return binding.root
     }

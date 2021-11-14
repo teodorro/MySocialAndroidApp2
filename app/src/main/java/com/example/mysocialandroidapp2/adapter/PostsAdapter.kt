@@ -63,7 +63,6 @@ class PostsAdapter(
                 content.text = post.content
                 avatar.loadCircleCrop("${BuildConfig.BASE_URL}/avatars/${post.authorAvatar}")
                 like.isChecked = post.likedByMe
-//            like.text = "${post.likes}"
                 like.text = "${post.likeOwnerIds.size}"
 
                 //TODO:

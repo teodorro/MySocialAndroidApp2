@@ -88,7 +88,7 @@ class PostsViewModel @Inject constructor(
     val selectedPost = MutableStateFlow<Post?>(null)
 
     init {
-        loadPosts()
+        //loadPosts()
     }
 
     fun loadPosts() = viewModelScope.launch {

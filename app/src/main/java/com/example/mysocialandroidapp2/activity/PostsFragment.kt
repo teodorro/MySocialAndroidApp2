@@ -11,25 +11,36 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import androidx.work.*
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.adapter.OnPostInteractionListener
 import com.example.mysocialandroidapp2.adapter.PostsAdapter
+import com.example.mysocialandroidapp2.databinding.FragmentNewPostBinding
 import com.example.mysocialandroidapp2.databinding.FragmentPostsBinding
 import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.enumeration.UserListType
 import com.example.mysocialandroidapp2.viewmodel.PostsViewModel
+import com.example.mysocialandroidapp2.work.RefreshPostsWorker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PostsFragment : Fragment() {
+
+    @Inject
+    lateinit var workManager: WorkManager
 
     private var newPostsWasPressed: Boolean = false
 
     private val viewModel: PostsViewModel by viewModels(
         ownerProducer = ::requireParentFragment,
     )
+
+    private var fragmentBinding: FragmentPostsBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +49,25 @@ class PostsFragment : Fragment() {
     ): View {
         val binding = FragmentPostsBinding.inflate(inflater, container, false)
 
-        viewModel.clearLocalTable()
+        fragmentBinding = binding
+
+//        viewModel.clearLocalTable()
+
+//        lifecycleScope.launchWhenCreated {
+//            val constraints = Constraints.Builder()
+//                .setRequiredNetworkType(NetworkType.CONNECTED)
+//                .build()
+//            val request = PeriodicWorkRequestBuilder<RefreshPostsWorker>(1, TimeUnit.MINUTES)
+//                .setConstraints(constraints)
+//                .build()
+//            workManager.enqueueUniquePeriodicWork(
+//                RefreshPostsWorker.NAME,
+//                ExistingPeriodicWorkPolicy.KEEP,
+//                request
+//            )
+//        }
+
+        viewModel.loadPosts()
 
         val adapter = PostsAdapter(object : OnPostInteractionListener {
             override fun onEdit(post: Post) {
@@ -112,11 +141,13 @@ class PostsFragment : Fragment() {
 
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
+        adapter.refresh()
+
         return binding.root
     }
 
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragmentBinding = null
+    }
 }

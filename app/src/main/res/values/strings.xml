@@ -49,6 +49,7 @@
     <string name="title_authentication">Authentication</string>
     <string name="title_registration">Registration</string>
     <string name="title_avatar">Choose avatar</string>
+    <string name="title_new_post">New post</string>
 
     <string name="notification_user_liked">User %1$s liked %2$s\'s post</string>
     <string name="description_post_author_avatar">Post author avatar</string>

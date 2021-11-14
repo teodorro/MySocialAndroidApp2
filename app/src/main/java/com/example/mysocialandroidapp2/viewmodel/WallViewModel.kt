@@ -64,7 +64,7 @@ class WallViewModel @Inject constructor(
 
 
     init {
-        loadPosts()
+        //loadPosts()
     }
 
 

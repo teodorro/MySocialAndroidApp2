@@ -88,8 +88,12 @@ class EventsAdapter (
                                     onInteractionListener.onShowUsers(event, UserListType.LIKES)
                                     true
                                 }
-                                R.id.mentions -> {
-                                    onInteractionListener.onShowUsers(event, UserListType.MENTIONS)
+                                R.id.participants -> {
+                                    onInteractionListener.onShowUsers(event, UserListType.PARTICIPANTS)
+                                    true
+                                }
+                                R.id.speakers -> {
+                                    onInteractionListener.onShowUsers(event, UserListType.SPEAKERS)
                                     true
                                 }
                                 else -> false
