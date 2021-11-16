@@ -1,5 +1,6 @@
 package com.example.mysocialandroidapp2.activity
 
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,22 +51,6 @@ class PostsFragment : Fragment() {
         val binding = FragmentPostsBinding.inflate(inflater, container, false)
 
         fragmentBinding = binding
-
-//        viewModel.clearLocalTable()
-
-//        lifecycleScope.launchWhenCreated {
-//            val constraints = Constraints.Builder()
-//                .setRequiredNetworkType(NetworkType.CONNECTED)
-//                .build()
-//            val request = PeriodicWorkRequestBuilder<RefreshPostsWorker>(1, TimeUnit.MINUTES)
-//                .setConstraints(constraints)
-//                .build()
-//            workManager.enqueueUniquePeriodicWork(
-//                RefreshPostsWorker.NAME,
-//                ExistingPeriodicWorkPolicy.KEEP,
-//                request
-//            )
-//        }
 
         viewModel.loadPosts()
 
@@ -118,6 +103,7 @@ class PostsFragment : Fragment() {
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_nav_posts_to_newPostFragment)
         }
+        binding.fab.isVisible = viewModel.appAuth.authStateFlow.value.id.toInt() > 0
 
         binding.fabNewPosts.setOnClickListener {
             viewModel.updateWasSeen()

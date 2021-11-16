@@ -1,13 +1,11 @@
 package com.example.mysocialandroidapp2.activity
 
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -16,7 +14,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.mysocialandroidapp2.R
@@ -170,6 +167,9 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
             else if (fragment is PostsFragment)
                 Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
                     .navigate(R.id.action_nav_posts_to_authFragment)
+            else if (fragment is RegFragment)
+                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.action_regFragment_to_authFragment)
         }
 
         authViewModel.moveToSignUpEvent.observe(this) {
@@ -186,6 +186,9 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
             else if (fragment is PostsFragment)
                 Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
                     .navigate(R.id.action_nav_posts_to_regFragment)
+            else if (fragment is AuthFragment)
+                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.action_authFragment_to_regFragment)
         }
 
         authViewModel.signOutEvent.observe(this) {

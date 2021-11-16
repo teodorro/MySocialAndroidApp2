@@ -54,7 +54,7 @@ private val noPhoto = PhotoModel()
 class PostsViewModel @Inject constructor(
     private val repository: PostRepository,
     private val workManager: WorkManager,
-    private val appAuth: AppAuth
+    val appAuth: AppAuth
 ) : ViewModel() {
 
     private val cached = repository
