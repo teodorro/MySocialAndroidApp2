@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_nav_posts_to_usersFragment"
             app:destination="@id/usersFragment" />
+        <action
+            android:id="@+id/action_nav_posts_to_mentionsFragment"
+            app:destination="@id/mentionsFragment" />
     </fragment>
 
     <fragment
@@ -100,7 +103,11 @@
         android:id="@+id/newPostFragment"
         android:name="com.example.mysocialandroidapp2.activity.NewPostFragment"
         android:label="fragment_new_post"
-        tools:layout="@layout/fragment_new_post" />
+        tools:layout="@layout/fragment_new_post" >
+        <action
+            android:id="@+id/action_newPostFragment_to_mentionsFragment"
+            app:destination="@id/mentionsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/usersFragment"
         android:name="com.example.mysocialandroidapp2.activity.UsersFragment"
@@ -114,4 +121,8 @@
         android:name="com.example.mysocialandroidapp2.activity.NewJobFragment"
         android:label="fragment_new_job"
         tools:layout="@layout/fragment_new_job" />
+    <fragment
+        android:id="@+id/mentionsFragment"
+        android:name="com.example.mysocialandroidapp2.activity.MentionsFragment"
+        android:label="MentionsFragment" />
 </navigation>

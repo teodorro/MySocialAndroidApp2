@@ -72,8 +72,9 @@ class NewPostFragment : Fragment() {
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_new_post)
 
-        arguments?.textArg
-            ?.let(binding.edit::setText)
+//        arguments?.textArg
+//            ?.let(binding.edit::setText)
+        binding.edit.setText(viewModel.edited.value?.content)
 
         binding.edit.requestFocus()
 

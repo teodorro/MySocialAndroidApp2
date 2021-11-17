@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -35,6 +36,8 @@ class WallFragment : Fragment() {
             if (arguments != null)
                 wasCalledFromMenu = false
         }
+
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_wall)
     }
 
     override fun onCreateView(
@@ -49,15 +52,15 @@ class WallFragment : Fragment() {
 
         val adapter = PostsAdapter(object : OnPostInteractionListener {
             override fun onEdit(post: Post) {
-//                viewModel.edit(post)
+                viewModel.edit(post)
             }
 
             override fun onLike(post: Post) {
-//                viewModel.likeById(post.id)
+                viewModel.likeById(post.id)
             }
 
             override fun onRemove(post: Post) {
-//                viewModel.removeById(post.id)
+                viewModel.removeById(post.id)
             }
 
             override fun onShowPicAttachment(post: Post) {
@@ -81,7 +84,6 @@ class WallFragment : Fragment() {
             viewModel.refreshPosts()
             adapter.refresh()
         }
-
 
         lifecycleScope.launchWhenCreated {
             viewModel.data.collectLatest(adapter::submitData)

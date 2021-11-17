@@ -30,7 +30,7 @@ import java.io.File
 import java.time.Instant
 import javax.inject.Inject
 
-private val empty = Post(
+val emptyPost = Post(
     id = 0,
     content = "",
     author = "",
@@ -76,7 +76,10 @@ class PostsViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-    private val edited = MutableLiveData(empty)
+    private val _edited = MutableLiveData(emptyPost)
+    val edited: LiveData<Post>
+        get() = _edited
+
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
@@ -137,12 +140,12 @@ class PostsViewModel @Inject constructor(
                 }
             }
         }
-        edited.value = empty
+        _edited.value = emptyPost
         _photo.value = noPhoto
     }
 
     fun edit(post: Post) {
-        edited.value = post
+        _edited.value = post
     }
 
     fun changeContent(content: String) {
@@ -151,7 +154,7 @@ class PostsViewModel @Inject constructor(
             return
         }
 //        edited.value = edited.value?.copy(content = text)
-        edited.value = edited.value?.copy(content = text, author = appAuth.userFlow.value.name, authorId = appAuth.userFlow.value.id)
+        _edited.value = edited.value?.copy(content = text, author = appAuth.userFlow.value.name, authorId = appAuth.userFlow.value.id)
     }
 
     fun likeById(id: Long) {
@@ -159,7 +162,7 @@ class PostsViewModel @Inject constructor(
             try {
                 _dataState.value = FeedModelState(loading = true)
                 repository.likeById(id)
-                edited.value = edited.value?.copy(likedByMe = true)
+                _edited.value = edited.value?.copy(likedByMe = true)
                 _dataState.value = FeedModelState()
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)

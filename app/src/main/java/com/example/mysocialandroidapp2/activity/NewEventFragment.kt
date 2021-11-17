@@ -12,7 +12,7 @@ import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.databinding.FragmentNewEventBinding
 import com.example.mysocialandroidapp2.util.AndroidUtils
 import com.example.mysocialandroidapp2.util.StringArg
-import com.example.mysocialandroidapp2.viewmodel.PostsViewModel
+import com.example.mysocialandroidapp2.viewmodel.EventsViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +27,7 @@ class NewEventFragment : Fragment() {
         var Bundle.textArg: String? by StringArg
     }
 
-    private val viewModel: PostsViewModel by viewModels(
+    private val viewModel: EventsViewModel by viewModels(
         ownerProducer = ::requireParentFragment,
     )
 
@@ -98,7 +98,7 @@ class NewEventFragment : Fragment() {
             viewModel.changePhoto(null, null)
         }
 
-        viewModel.postCreated.observe(viewLifecycleOwner) {
+        viewModel.eventCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
 

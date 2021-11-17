@@ -21,6 +21,7 @@ import com.example.mysocialandroidapp2.databinding.FragmentPostsBinding
 import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.enumeration.UserListType
 import com.example.mysocialandroidapp2.viewmodel.PostsViewModel
+import com.example.mysocialandroidapp2.viewmodel.emptyPost
 import com.example.mysocialandroidapp2.work.RefreshPostsWorker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,6 +58,7 @@ class PostsFragment : Fragment() {
         val adapter = PostsAdapter(object : OnPostInteractionListener {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
+                findNavController().navigate(R.id.action_nav_posts_to_newPostFragment)
             }
 
             override fun onLike(post: Post) {
@@ -101,6 +103,7 @@ class PostsFragment : Fragment() {
         }
 
         binding.fab.setOnClickListener {
+            viewModel.edit(emptyPost)
             findNavController().navigate(R.id.action_nav_posts_to_newPostFragment)
         }
         binding.fab.isVisible = viewModel.appAuth.authStateFlow.value.id.toInt() > 0

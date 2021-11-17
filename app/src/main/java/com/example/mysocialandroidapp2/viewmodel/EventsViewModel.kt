@@ -32,7 +32,7 @@ import java.time.Instant
 import javax.inject.Inject
 
 
-private val empty = Event(
+private val emptyEvent = Event(
     id = 0,
     content = "",
     author = "",
@@ -79,10 +79,10 @@ class EventsViewModel @Inject constructor(
     val dataState: LiveData<EventFeedModelState>
         get() = _dataState
 
-    private val edited = MutableLiveData(empty)
-    private val _postCreated = SingleLiveEvent<Unit>()
-    val postCreated: LiveData<Unit>
-        get() = _postCreated
+    private val edited = MutableLiveData(emptyEvent)
+    private val _eventCreated = SingleLiveEvent<Unit>()
+    val eventCreated: LiveData<Unit>
+        get() = _eventCreated
 
     private val _photo = MutableLiveData(noPhoto)
     val photo: LiveData<PhotoModel>
@@ -119,7 +119,7 @@ class EventsViewModel @Inject constructor(
 
     fun save() {
         edited.value?.let {
-            _postCreated.value = Unit
+            _eventCreated.value = Unit
             viewModelScope.launch {
                 try {
                     val id = repository.saveWork(
@@ -141,7 +141,7 @@ class EventsViewModel @Inject constructor(
                 }
             }
         }
-        edited.value = empty
+        edited.value = emptyEvent
         _photo.value = noPhoto
     }
 
