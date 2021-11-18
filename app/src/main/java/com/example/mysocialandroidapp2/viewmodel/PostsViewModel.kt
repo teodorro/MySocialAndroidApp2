@@ -164,7 +164,6 @@ class PostsViewModel @Inject constructor(
         if (edited.value?.content == text) {
             return
         }
-//        edited.value = edited.value?.copy(content = text)
         _edited.value = edited.value?.copy(content = text, author = appAuth.userFlow.value.name, authorId = appAuth.userFlow.value.id)
     }
 
@@ -234,18 +233,11 @@ class PostsViewModel @Inject constructor(
     fun mention(userId: Long){
         val post = edited.value
         if (post != null) {
-//            var mentions = post.mentionIds.toMutableSet()
-//            if (mentions?.contains(userId))
-//                mentions?.remove(userId)
-//            else
-//                mentions?.add(userId)
-//            _edited.value = edited.value?.copy(mentionIds = mentions)
-            var mentions = post.mentionIds//.toMutableSet()
+            var mentions = post.mentionIds
             if (mentions?.contains(userId))
                 mentions?.remove(userId)
             else
                 mentions?.add(userId)
-//            _edited.value = edited.value?.copy(mentionIds = mentions)
             save()
         }
     }
