@@ -124,5 +124,9 @@
     <fragment
         android:id="@+id/mentionsFragment"
         android:name="com.example.mysocialandroidapp2.activity.MentionsFragment"
-        android:label="MentionsFragment" />
+        android:label="MentionsFragment" >
+        <action
+            android:id="@+id/action_mentionsFragment_to_wallFragment"
+            app:destination="@id/wallFragment" />
+    </fragment>
 </navigation>

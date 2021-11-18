@@ -81,7 +81,15 @@ class PostsFragment : Fragment() {
                     else -> emptySet()
                 }
                 val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
-                findNavController().navigate(R.id.action_nav_posts_to_usersFragment, listTypeBundle)
+                if (userListType == UserListType.MENTIONS) {
+                    viewModel.edit(post)
+                    findNavController().navigate(
+                        R.id.action_nav_posts_to_mentionsFragment,
+                        listTypeBundle
+                    )
+                }
+                else
+                    findNavController().navigate(R.id.action_nav_posts_to_usersFragment, listTypeBundle)
             }
         })
         binding.recyclerView.adapter = adapter

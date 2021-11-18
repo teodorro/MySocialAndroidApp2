@@ -7,9 +7,21 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.databinding.MentionItemBinding
+import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.dto.User
+import com.example.mysocialandroidapp2.enumeration.UserListType
 
-class MentionsAdapter(): ListAdapter<User, MentionsAdapter.MentionsViewHolder>(MentionsDiffCallback())  {
+
+interface OnPostMentionListener {
+    fun onMention(user: User) {}
+    fun onUserClicked(user: User)
+}
+
+class MentionsAdapter(
+    private val onPostMentionListener: OnPostMentionListener,
+    private val post: Post?,
+    ): ListAdapter<User, MentionsAdapter.MentionsViewHolder>(MentionsDiffCallback())  {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MentionsViewHolder {
         var binding =
             MentionItemBinding.inflate(
@@ -22,7 +34,7 @@ class MentionsAdapter(): ListAdapter<User, MentionsAdapter.MentionsViewHolder>(M
 
     override fun onBindViewHolder(holder: MentionsViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item, onPostMentionListener, post)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -47,12 +59,23 @@ class MentionsAdapter(): ListAdapter<User, MentionsAdapter.MentionsViewHolder>(M
 
         var userId: Long = -1
 
-        fun bind(user: User){
+        fun bind(user: User,
+                 onPostMentionListener: OnPostMentionListener,
+                 post: Post?,){
             binding.apply {
 //                avatar.setImageUri(user.avatar)
                 avatar.setImageResource(R.drawable.ic_avatar) // TODO
                 username.text = user.name
                 userId = user.id
+                mentionedCheckBox.isChecked = post?.mentionIds?.contains(userId) ?: false
+            }
+
+            binding.mentionedCheckBox.setOnClickListener {
+                onPostMentionListener.onMention(user)
+            }
+
+            itemView.setOnClickListener {
+                onPostMentionListener.onUserClicked(user)
             }
         }
     }

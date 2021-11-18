@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.example.mysocialandroidapp2.dto.Media
 import com.example.mysocialandroidapp2.dto.MediaUpload
 import com.example.mysocialandroidapp2.dto.Post
+import com.example.mysocialandroidapp2.dto.User
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
@@ -20,5 +21,6 @@ interface PostRepository {
     suspend fun processWork(postId: Long)
     suspend fun removeWork(postId: Long)
     suspend fun clearLocalTable()
-
+    val allUsers: Flow<List<User>>
+    suspend fun getUsers()
 }

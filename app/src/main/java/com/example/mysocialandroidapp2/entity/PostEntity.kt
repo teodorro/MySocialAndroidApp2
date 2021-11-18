@@ -19,7 +19,7 @@ data class PostEntity(
     @Embedded
     var coords: CoordinatesEmbeddable? = null,
     val link: String?,
-    var mentionIds: Set<Long> = mutableSetOf(),
+    var mentionIds: MutableSet<Long> = mutableSetOf(),
     val mentionedMe: Boolean = false,
     val likeOwnerIds: Set<Long> = emptySet(),
     val likedByMe: Boolean,

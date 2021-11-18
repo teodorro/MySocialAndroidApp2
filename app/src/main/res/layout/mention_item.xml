@@ -9,7 +9,7 @@
 
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/mentionedCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/common_spacing"
         android:contentDescription="avatar"
         android:padding="8dp"
-        app:layout_constraintStart_toEndOf="@+id/checkBox"
+        app:layout_constraintStart_toEndOf="@+id/mentionedCheckBox"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@sample/posts.json/data/authorAvatar" />
 

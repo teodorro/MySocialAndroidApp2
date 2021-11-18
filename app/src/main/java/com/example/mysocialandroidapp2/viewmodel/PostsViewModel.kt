@@ -2,10 +2,7 @@ package com.example.mysocialandroidapp2.viewmodel
 
 import android.net.Uri
 import androidx.core.net.toFile
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -15,6 +12,7 @@ import com.example.mysocialandroidapp2.dto.MediaUpload
 import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.model.FeedModelState
 import com.example.mysocialandroidapp2.model.PhotoModel
+import com.example.mysocialandroidapp2.model.UsersFeedModel
 import com.example.mysocialandroidapp2.repository.PostRepository
 import com.example.mysocialandroidapp2.util.SingleLiveEvent
 import com.example.mysocialandroidapp2.work.RemovePostWorker
@@ -41,7 +39,7 @@ val emptyPost = Post(
     published = Instant.now().toString(),
     coords = null,
     link = null,
-    mentionIds = emptySet(),
+    mentionIds = mutableSetOf(),
     mentionedMe = false,
     likeOwnerIds = emptySet(),
     attachment = null
@@ -71,6 +69,12 @@ class PostsViewModel @Inject constructor(
             }
         }
 
+    val allUsers: LiveData<UsersFeedModel> = repository.allUsers
+        .map { users ->
+            UsersFeedModel(users,
+                users.isEmpty()
+            )
+        }.asLiveData()
 
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
@@ -102,6 +106,13 @@ class PostsViewModel @Inject constructor(
             _dataState.value = FeedModelState()
         } catch (e: Exception) {
             _dataState.value = FeedModelState(error = true)
+        }
+    }
+
+    fun loadUsers() = viewModelScope.launch {
+        try {
+            repository.getUsers()
+        } catch (e: Exception) {
         }
     }
 
@@ -220,4 +231,22 @@ class PostsViewModel @Inject constructor(
         }
     }
 
+    fun mention(userId: Long){
+        val post = edited.value
+        if (post != null) {
+//            var mentions = post.mentionIds.toMutableSet()
+//            if (mentions?.contains(userId))
+//                mentions?.remove(userId)
+//            else
+//                mentions?.add(userId)
+//            _edited.value = edited.value?.copy(mentionIds = mentions)
+            var mentions = post.mentionIds//.toMutableSet()
+            if (mentions?.contains(userId))
+                mentions?.remove(userId)
+            else
+                mentions?.add(userId)
+//            _edited.value = edited.value?.copy(mentionIds = mentions)
+            save()
+        }
+    }
 }
