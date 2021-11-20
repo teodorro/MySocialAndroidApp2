@@ -44,6 +44,10 @@ class AuthViewModel @Inject constructor(
     val signOutEvent: LiveData<Unit>
         get() = _signOutEvent
 
+    private val _authenticatedEvent = SingleLiveEvent<Unit>()
+    val authenticatedEvent: LiveData<Unit>
+        get() = _authenticatedEvent
+
     private val _moveToSignUpEvent = SingleLiveEvent<Unit>()
     val moveToSignUpEvent: LiveData<Unit>
         get() = _moveToSignUpEvent

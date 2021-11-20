@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -17,6 +18,7 @@ import com.example.mysocialandroidapp2.databinding.FragmentWallBinding
 import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.enumeration.UserListType
 import com.example.mysocialandroidapp2.viewmodel.WallViewModel
+import com.example.mysocialandroidapp2.viewmodel.emptyPost
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -50,7 +52,7 @@ class WallFragment : Fragment() {
             viewModel.userId = viewModel.appAuth.userFlow.value.id
         wasCalledFromMenu = true
 
-        val userId = viewModel.appAuth.authStateFlow.value.id
+        val currentUserId = viewModel.appAuth.authStateFlow.value.id
 
         val adapter = PostsAdapter(
             object : OnPostInteractionListener {
@@ -84,7 +86,7 @@ class WallFragment : Fragment() {
                     )
                 }
             },
-            userId
+            currentUserId
         )
         binding.recyclerView.adapter = adapter
 
@@ -96,6 +98,12 @@ class WallFragment : Fragment() {
         lifecycleScope.launchWhenCreated {
             viewModel.data.collectLatest(adapter::submitData)
         }
+
+        binding.fab.setOnClickListener {
+            viewModel.edit(emptyPost)
+            findNavController().navigate(R.id.action_wallFragment_to_newPostFragment)
+        }
+        binding.fab.isVisible = currentUserId == viewModel.userId
 
         adapter.refresh()
 

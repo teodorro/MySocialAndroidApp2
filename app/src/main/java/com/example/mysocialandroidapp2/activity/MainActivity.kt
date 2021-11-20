@@ -41,91 +41,6 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
 
     private val authViewModel: AuthViewModel by viewModels()
 
-    /*override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setSupportActionBar(binding.appBarMain.toolbar)
-
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        val navView: NavigationView = binding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_posts, R.id.nav_events, R.id.nav_jobs
-            ), drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-
-        authViewModel.moveToAuthEvent.observe(this) {
-            var fragment = getCurrentFragment()
-            if (fragment is PostsFragment)
-                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_nav_posts_to_authFragment)
-            else if (fragment is EventsFragment)
-                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_nav_events_to_authFragment)
-            else if (fragment is JobsFragment)
-                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_nav_jobs_to_authFragment)
-        }
-
-        authViewModel.moveToSignUpEvent.observe(this) {
-            var fragment = getCurrentFragment()
-            if (fragment is PostsFragment)
-                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_nav_posts_to_regFragment)
-            else if (fragment is EventsFragment)
-                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_nav_events_to_regFragment)
-            else if (fragment is JobsFragment)
-                Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-                    .navigate(R.id.action_nav_jobs_to_regFragment)
-        }
-
-        authViewModel.signOutEvent.observe(this) {
-            authViewModel.signOut()
-        }
-
-        authViewModel.data.observe(this) {
-            invalidateOptionsMenu()
-        }
-
-        firebaseMessaging.token.addOnCompleteListener { task ->
-            if (!task.isSuccessful)
-                Log.d(null, "Something wrong happened: ${task.exception}")
-            val token = task.result
-            Log.d(null, token)
-        }
-
-        // Настройка drawer header
-        var headerView = binding.navView.getHeaderView(0)
-        val headerBinding: DrawerHeaderBinding = DrawerHeaderBinding.bind(headerView)
-        authViewModel.user.observe(this){
-            if (authViewModel.authenticated) {
-                headerBinding.textViewName.text = authViewModel.user.value?.name
-            } else {
-                with(headerBinding){
-                    textViewName.text = "Not authenticated"
-                    imageViewAvatar.setImageResource(R.drawable.ic_avatar)
-                }
-            }
-        }
-
-        with(authViewModel){
-            if (authenticated) {
-                val prefs = getSharedPreferences(
-                    "auth",
-                    Context.MODE_PRIVATE)
-                initUser(prefs.getLong("id", 0))
-            }
-        }
-    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,14 +63,6 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-//        {
-//            val userIdBundle = bundleOf(POST_ID to authViewModel.user.value?.id)
-//            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
-//                .navigate(
-//                    R.id.action_wallFragment_to_authFragment,
-//                    userIdBundle
-//                )
-//        }
         authViewModel.moveToAuthEvent.observe(this) {
             var fragment = getCurrentFragment()
             if (fragment is WallFragment)
@@ -196,6 +103,11 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
 
         authViewModel.signOutEvent.observe(this) {
             authViewModel.signOut()
+            navView.menu.setGroupVisible(R.id.personal, false)
+        }
+
+        authViewModel.authenticatedEvent.observe(this) {
+            navView.menu.setGroupVisible(R.id.personal, true)
         }
 
         authViewModel.data.observe(this) {
@@ -215,6 +127,7 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
         authViewModel.user.observe(this){
             if (authViewModel.authenticated) {
                 headerBinding.textViewName.text = authViewModel.user.value?.name
+                navView.menu.setGroupVisible(R.id.personal, true)
             } else {
                 with(headerBinding){
                     textViewName.text = "Not authenticated"

@@ -41,8 +41,9 @@ class MentionsFragment : Fragment(), OnPostMentionListener {
         fragmentBinding = binding
 
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_mentions)
+        val userId = viewModel.appAuth.authStateFlow.value.id
 
-        val adapter = MentionsAdapter(this, viewModel.edited.value)
+        val adapter = MentionsAdapter(this, viewModel.edited.value, userId)
         binding.usersList.adapter = adapter
 
         viewModel.loadUsers()
