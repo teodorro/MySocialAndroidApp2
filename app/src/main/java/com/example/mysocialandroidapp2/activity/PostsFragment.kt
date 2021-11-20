@@ -54,44 +54,50 @@ class PostsFragment : Fragment() {
         fragmentBinding = binding
 
         viewModel.loadPosts()
+        val userId = viewModel.appAuth.authStateFlow.value.id
 
-        val adapter = PostsAdapter(object : OnPostInteractionListener {
-            override fun onEdit(post: Post) {
-                viewModel.edit(post)
-                findNavController().navigate(R.id.action_nav_posts_to_newPostFragment)
-            }
-
-            override fun onLike(post: Post) {
-                viewModel.likeById(post.id)
-            }
-
-            override fun onRemove(post: Post) {
-                viewModel.removeById(post.id)
-            }
-
-            override fun onShowPicAttachment(post: Post) {
-                viewModel.selectedPost.value = post
-                //findNavController().navigate(R.id.action_feedFragment_to_picFragment)
-            }
-
-            override fun onShowUsers(post: Post, userListType: UserListType) {
-                val ids = when(userListType){
-                    UserListType.LIKES -> post.likeOwnerIds
-                    UserListType.MENTIONS -> post.mentionIds
-                    else -> emptySet()
-                }
-                val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
-                if (userListType == UserListType.MENTIONS) {
+        val adapter = PostsAdapter(
+            object : OnPostInteractionListener {
+                override fun onEdit(post: Post) {
                     viewModel.edit(post)
-                    findNavController().navigate(
-                        R.id.action_nav_posts_to_mentionsFragment,
-                        listTypeBundle
-                    )
+                    findNavController().navigate(R.id.action_nav_posts_to_newPostFragment)
                 }
-                else
-                    findNavController().navigate(R.id.action_nav_posts_to_usersFragment, listTypeBundle)
-            }
-        })
+
+                override fun onLike(post: Post) {
+                    viewModel.likeById(post.id)
+                }
+
+                override fun onRemove(post: Post) {
+                    viewModel.removeById(post.id)
+                }
+
+                override fun onShowPicAttachment(post: Post) {
+                    viewModel.selectedPost.value = post
+                    //findNavController().navigate(R.id.action_feedFragment_to_picFragment)
+                }
+
+                override fun onShowUsers(post: Post, userListType: UserListType) {
+                    val ids = when (userListType) {
+                        UserListType.LIKES -> post.likeOwnerIds
+                        UserListType.MENTIONS -> post.mentionIds
+                        else -> emptySet()
+                    }
+                    val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
+                    if (userListType == UserListType.MENTIONS) {
+                        viewModel.edit(post)
+                        findNavController().navigate(
+                            R.id.action_nav_posts_to_mentionsFragment,
+                            listTypeBundle
+                        )
+                    } else
+                        findNavController().navigate(
+                            R.id.action_nav_posts_to_usersFragment,
+                            listTypeBundle
+                        )
+                }
+            },
+            userId
+        )
         binding.recyclerView.adapter = adapter
 
         viewModel.dataState.observe(viewLifecycleOwner, { state ->

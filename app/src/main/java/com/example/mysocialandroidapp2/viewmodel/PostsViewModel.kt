@@ -35,7 +35,6 @@ val emptyPost = Post(
     authorId = 0,
     authorAvatar = "",
     likedByMe = false,
-//    published = Instant.now(),
     published = Instant.now().toString(),
     coords = null,
     link = null,

@@ -25,10 +25,11 @@ interface OnPostInteractionListener {
 
 class PostsAdapter(
     private val onInteractionListener: OnPostInteractionListener,
+    private val userId: Long
 ) : PagingDataAdapter<Post, PostsAdapter.PostViewHolder>(PostDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, onInteractionListener)
+        return PostViewHolder(binding, onInteractionListener, userId)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -54,6 +55,7 @@ class PostsAdapter(
     class PostViewHolder(
         private val binding: CardPostBinding,
         private val onInteractionListener: OnPostInteractionListener,
+        private val userId: Long,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post) {
@@ -65,13 +67,14 @@ class PostsAdapter(
                 like.isChecked = post.likedByMe
                 like.text = "${post.likeOwnerIds.size}"
 
-                //TODO:
-                menu.visibility = View.VISIBLE//if (post.ownedByMe) View.VISIBLE else View.INVISIBLE
+                menu.visibility = View.VISIBLE
 
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {
                         inflate(R.menu.options_post)
-                        menu.setGroupVisible(R.id.owned, true)
+                        var a = userId
+                        menu.setGroupVisible(R.id.owned, userId == post.authorId)
+                        menu.setGroupVisible(R.id.all_public, true)
 
                         setOnMenuItemClickListener { item ->
                             when (item.itemId) {

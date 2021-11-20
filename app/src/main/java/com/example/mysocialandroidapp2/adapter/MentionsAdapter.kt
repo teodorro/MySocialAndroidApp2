@@ -2,6 +2,7 @@ package com.example.mysocialandroidapp2.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,7 @@ interface OnPostMentionListener {
 class MentionsAdapter(
     private val onPostMentionListener: OnPostMentionListener,
     private val post: Post?,
+    private val currentUserId: Long,
     ): ListAdapter<User, MentionsAdapter.MentionsViewHolder>(MentionsDiffCallback())  {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MentionsViewHolder {
@@ -29,7 +31,7 @@ class MentionsAdapter(
                 parent,
                 false
             )
-        return MentionsViewHolder(binding)
+        return MentionsViewHolder(binding, currentUserId)
     }
 
     override fun onBindViewHolder(holder: MentionsViewHolder, position: Int) {
@@ -55,6 +57,7 @@ class MentionsAdapter(
 
     class MentionsViewHolder(
         private val binding: MentionItemBinding,
+        private val currentUserId: Long,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         var userId: Long = -1
@@ -68,6 +71,7 @@ class MentionsAdapter(
                 username.text = user.name
                 userId = user.id
                 mentionedCheckBox.isChecked = post?.mentionIds?.contains(userId) ?: false
+                mentionedCheckBox.isVisible = post?.authorId == currentUserId
             }
 
             binding.mentionedCheckBox.setOnClickListener {
