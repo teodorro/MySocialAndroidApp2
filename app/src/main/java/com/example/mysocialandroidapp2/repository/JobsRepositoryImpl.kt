@@ -59,21 +59,6 @@ class JobsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun remove(jobId: Long) {
-        try {
-            val response = apiService.removeJobById(jobId)
-            if (!response.isSuccessful) {
-                throw ApiError(response.code(), response.message())
-            }
-
-            jobDao.removeById(jobId)
-        } catch (e: IOException) {
-            throw NetworkError
-        } catch (e: Exception) {
-            throw UnknownError
-        }
-    }
-
     override suspend fun processWork(jobId: Long) {
         try {
             val entity = jobDao.getById(jobId)
@@ -83,6 +68,7 @@ class JobsRepositoryImpl @Inject constructor(
             Log.d(null, entity.id.toString())
             Log.d(null, job.id.toString())
         } catch (e: Exception) {
+            Log.d(null, e.message.toString())
             throw UnknownError
         }
     }
@@ -96,6 +82,7 @@ class JobsRepositoryImpl @Inject constructor(
             jobDao.removeById(jobId)
 
         } catch (e: Exception) {
+            var a = e
             throw UnknownError
         }
     }

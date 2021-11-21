@@ -5,6 +5,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
+import com.example.mysocialandroidapp2.repository.EventsRepository
 import com.example.mysocialandroidapp2.repository.JobsRepository
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,7 +13,7 @@ import javax.inject.Singleton
 class SaveEventWorker (
     applicationContext: Context,
     params: WorkerParameters,
-    private val repository: JobsRepository,
+    private val repository: EventsRepository,
 ) : CoroutineWorker(applicationContext, params) {
     companion object {
         const val EVENT_KEY = "event"
@@ -33,15 +34,15 @@ class SaveEventWorker (
 
     @Singleton
     class Factory @Inject constructor(
-        private val repository: JobsRepository,
+        private val repository: EventsRepository,
     ) : WorkerFactory() {
         override fun createWorker(
             appContext: Context,
             workerClassName: String,
             workerParameters: WorkerParameters
         ): ListenableWorker? = when (workerClassName) {
-            SaveJobWorker::class.java.name ->
-                SaveJobWorker(appContext, workerParameters, repository)
+            SaveEventWorker::class.java.name ->
+                SaveEventWorker(appContext, workerParameters, repository)
             else ->
                 null
         }

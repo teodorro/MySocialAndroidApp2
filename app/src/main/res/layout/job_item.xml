@@ -16,140 +16,140 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/textViews"
+    <TableLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/tab"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/menu"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/menu"
-        >
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/jobname_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/common_spacing"
-            android:paddingTop="14dp"
-            android:text="@string/name"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/jobname" />
+        app:layout_constraintTop_toTopOf="parent">
+        <TableRow android:padding="1dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/jobname_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:paddingLeft="@dimen/common_spacing"
+                android:paddingTop="14dp"
+                android:text="@string/name"/>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/jobname"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/smaller_spacing"
-            android:paddingTop="12dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="@sample/posts.json/data/author"
-            app:layout_constraintLeft_toRightOf="@+id/jobname_label"
-            app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/jobname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/smaller_spacing"
+                android:paddingTop="12dp"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="@sample/posts.json/data/content"/>
+        </TableRow>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/position_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/common_spacing"
-            android:paddingTop="4dp"
-            android:text="@string/position"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/position" />
+        <TableRow android:padding="1dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/position_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:paddingLeft="@dimen/common_spacing"
+                android:paddingTop="4dp"
+                android:text="@string/position" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/position"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/smaller_spacing"
-            android:paddingTop="4dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="@sample/posts.json/data/author"
-            app:layout_constraintLeft_toRightOf="@+id/position_label"
-            app:layout_constraintTop_toBottomOf="@+id/jobname" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:paddingLeft="@dimen/smaller_spacing"
+                android:paddingTop="4dp"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="@sample/posts.json/data/author" />
+        </TableRow>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/start_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/common_spacing"
-            android:paddingTop="4dp"
-            android:text="@string/start"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/start" />
+        <TableRow android:padding="1dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/start_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:paddingLeft="@dimen/common_spacing"
+                android:paddingTop="4dp"
+                android:text="@string/start"/>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/start"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/smaller_spacing"
-            android:paddingTop="4dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="@sample/posts.json/data/author"
-            app:layout_constraintLeft_toRightOf="@+id/start_label"
-            app:layout_constraintTop_toBottomOf="@+id/position" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:paddingLeft="@dimen/smaller_spacing"
+                android:paddingTop="4dp"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="@sample/posts.json/data/author"/>
+        </TableRow>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/finish_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/common_spacing"
-            android:paddingTop="4dp"
-            android:text="@string/finish"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/finish" />
+        <TableRow android:padding="1dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/finish_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:paddingLeft="@dimen/common_spacing"
+                android:paddingTop="4dp"
+                android:text="@string/finish"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/finish" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/finish"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/smaller_spacing"
-            android:paddingTop="4dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="@sample/posts.json/data/author"
-            app:layout_constraintLeft_toRightOf="@+id/start_label"
-            app:layout_constraintTop_toBottomOf="@+id/start" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/finish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:paddingLeft="@dimen/smaller_spacing"
+                android:paddingTop="4dp"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="@sample/posts.json/data/author"
+                app:layout_constraintLeft_toRightOf="@+id/start_label"
+                app:layout_constraintTop_toBottomOf="@+id/start" />
+        </TableRow>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/link_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/common_spacing"
-            android:paddingTop="4dp"
-            android:text="@string/link"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/link" />
+        <TableRow android:padding="1dp">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/link_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:paddingLeft="@dimen/common_spacing"
+                android:paddingTop="4dp"
+                android:text="@string/link"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/link" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/link"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:paddingLeft="@dimen/smaller_spacing"
-            android:paddingTop="4dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="@sample/posts.json/data/author"
-            app:layout_constraintLeft_toRightOf="@+id/link_label"
-            app:layout_constraintTop_toBottomOf="@+id/finish" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:autoLink="web"
+                android:paddingLeft="@dimen/smaller_spacing"
+                android:paddingTop="4dp"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="@sample/posts.json/data/author"
+                app:layout_constraintLeft_toRightOf="@+id/link_label"
+                app:layout_constraintTop_toBottomOf="@+id/finish" />
+        </TableRow>
+    </TableLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/menu"
@@ -158,9 +158,21 @@
         android:layout_height="wrap_content"
         android:contentDescription="@string/description_job_menu"
         android:layout_marginRight="4dp"
+        android:layout_marginTop="16dp"
         app:icon="@drawable/ic_more_vert_24"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/common_spacing"
+        android:layout_marginEnd="@dimen/common_spacing"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:background="@color/divider_color"
+        app:layout_constraintTop_toBottomOf="@+id/tab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

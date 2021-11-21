@@ -75,6 +75,7 @@ class JobsAdapter(
 
                 jobId = job.id
 
+//                menu.setGroupVisible(R.id.owned, userId == post.authorId)
                 menu.setOnClickListener {
                     PopupMenu(it.context, it).apply {
                         inflate(R.menu.options_job)

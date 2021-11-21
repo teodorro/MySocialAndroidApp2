@@ -1,8 +1,6 @@
 package com.example.mysocialandroidapp2.activity
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -15,7 +13,6 @@ import com.example.mysocialandroidapp2.viewmodel.JobsViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
 
 @AndroidEntryPoint
 class NewJobFragment : Fragment() {
@@ -71,7 +68,7 @@ class NewJobFragment : Fragment() {
         binding.editTextName.setText(viewModel.edited.value?.name)
         binding.editTextPosition.setText(viewModel.edited.value?.position)
         binding.editTextStart.setText(viewModel.edited.value?.start.toString())
-        binding.editTextFinish.setText(viewModel.edited.value?.finish.toString())
+        binding.editTextFinish.setText(viewModel.edited.value?.finish?.toString())
         binding.editTextLink.setText(viewModel.edited.value?.link)
 
         viewModel.jobCreated.observe(viewLifecycleOwner) {

@@ -110,8 +110,20 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
             navView.menu.setGroupVisible(R.id.personal, true)
         }
 
+        // Настройка drawer header
+        var headerView = binding.navView.getHeaderView(0)
+        val headerBinding: DrawerHeaderBinding = DrawerHeaderBinding.bind(headerView)
         authViewModel.data.observe(this) {
             invalidateOptionsMenu()
+            navView.menu.setGroupVisible(R.id.personal, it.id > 0)
+            if (authViewModel.authenticated) {
+                headerBinding.textViewName.text = authViewModel.user.value?.name
+            } else {
+                with(headerBinding){
+                    textViewName.text = "Not authenticated"
+                    imageViewAvatar.setImageResource(R.drawable.ic_avatar)
+                }
+            }
         }
 
         firebaseMessaging.token.addOnCompleteListener { task ->
@@ -119,21 +131,6 @@ class MainActivity @Inject constructor() : AppCompatActivity() {
                 Log.d(null, "Something wrong happened: ${task.exception}")
             val token = task.result
             Log.d(null, token)
-        }
-
-        // Настройка drawer header
-        var headerView = binding.navView.getHeaderView(0)
-        val headerBinding: DrawerHeaderBinding = DrawerHeaderBinding.bind(headerView)
-        authViewModel.user.observe(this){
-            if (authViewModel.authenticated) {
-                headerBinding.textViewName.text = authViewModel.user.value?.name
-                navView.menu.setGroupVisible(R.id.personal, true)
-            } else {
-                with(headerBinding){
-                    textViewName.text = "Not authenticated"
-                    imageViewAvatar.setImageResource(R.drawable.ic_avatar)
-                }
-            }
         }
 
         with(authViewModel){

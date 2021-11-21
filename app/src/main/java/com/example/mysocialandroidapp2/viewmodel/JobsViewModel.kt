@@ -13,13 +13,14 @@ import com.example.mysocialandroidapp2.work.SaveJobWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.time.Instant
 import javax.inject.Inject
 
 val emptyJob = Job(
     id = 0,
     name = "",
     position = "",
-    start = 0,
+    start = Instant.now().epochSecond,
     finish = null,
     link = null
 )
@@ -85,6 +86,7 @@ class JobsViewModel @Inject constructor(
 
                     _dataState.value = JobsFeedModelState()
                 } catch (e: Exception) {
+                    var a = e
                     _dataState.value = JobsFeedModelState(error = true)
                 }
             }
@@ -128,7 +130,7 @@ class JobsViewModel @Inject constructor(
         val name = name.trim()
         val position = position.trim()
         val start = start.trim().toLong()
-        val finish = finish.trim()?.toLong()
+        val finish = if (finish.trim().isNullOrBlank()) null else finish.trim()?.toLong()
         val link = link.trim()
         if (
             _edited.value?.name == name

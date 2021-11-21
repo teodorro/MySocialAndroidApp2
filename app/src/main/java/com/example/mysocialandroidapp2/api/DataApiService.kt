@@ -145,7 +145,7 @@ interface DataApiService {
     suspend fun saveJob(@Body job: Job): Response<Job>
 
     @DELETE("my/jobs/{id}")
-    suspend fun removeJobById(@Path("id") id: Long): Response<Job>
+    suspend fun removeJobById(@Path("id") id: Long): Response<Unit>
 
     //endregion
 
@@ -162,7 +162,7 @@ interface DataApiService {
     suspend fun saveEvent(@Body event: Event): Response<Event>
 
     @DELETE("events/{id}")
-    suspend fun removeEventById(@Path("id") id: Long): Response<Event>
+    suspend fun removeEventById(@Path("id") id: Long): Response<Unit>
 
     @GET("events/{id}")
     suspend fun getEventById(@Path("id") id: Long): Response<Event>

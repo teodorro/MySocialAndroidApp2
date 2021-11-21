@@ -83,7 +83,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/jobs"
+            android:id="@+id/buttonJobs"
             style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
             app:icon="@drawable/ic_baseline_work_24" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/events"
+            android:id="@+id/buttonEvents"
             style="@style/Widget.AppTheme.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

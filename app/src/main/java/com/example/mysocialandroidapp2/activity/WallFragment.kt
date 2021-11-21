@@ -105,6 +105,14 @@ class WallFragment : Fragment() {
         }
         binding.fab.isVisible = currentUserId == viewModel.userId
 
+        binding.buttonJobs.setOnClickListener {
+            findNavController().navigate(R.id.action_wallFragment_to_nav_jobs)
+        }
+
+        binding.buttonEvents.setOnClickListener {
+            findNavController().navigate(R.id.action_wallFragment_to_nav_events)
+        }
+
         adapter.refresh()
 
         return binding.root

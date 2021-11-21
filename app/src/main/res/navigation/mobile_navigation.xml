@@ -75,6 +75,12 @@
         <action
             android:id="@+id/action_wallFragment_to_newPostFragment"
             app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_wallFragment_to_nav_jobs"
+            app:destination="@id/nav_jobs" />
+        <action
+            android:id="@+id/action_wallFragment_to_nav_events"
+            app:destination="@id/nav_events" />
     </fragment>
     <fragment
         android:id="@+id/regFragment"
