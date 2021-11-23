@@ -83,71 +83,79 @@
             app:layout_constraintTop_toBottomOf="@id/header"
             tools:text="@sample/posts.json/data/content" />
 
-        <TextView
-        android:id="@+id/labelDatetime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/smaller_spacing"
-        android:paddingBottom="@dimen/smaller_spacing"
-        android:text="@string/datetime"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/datetime"/>
-
-        <TextView
-            android:id="@+id/datetime"
+        <TableLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/common_spacing"
-            android:paddingTop="@dimen/smaller_spacing"
-            android:paddingBottom="@dimen/smaller_spacing"
-            tools:text="@sample/posts.json/data/content"
+            android:id="@+id/tab"
+            app:layout_constraintBottom_toTopOf="@+id/constrLayoutAttachment"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/labelDatetime"
-            app:layout_constraintTop_toBottomOf="@id/content"/>
-
-        <TextView
-            android:id="@+id/labelCoords"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/smaller_spacing"
-            android:paddingBottom="@dimen/smaller_spacing"
-            android:text="@string/position"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/coords"/>
+            app:layout_constraintTop_toBottomOf="@+id/content">
 
-        <TextView
-            android:id="@+id/coords"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/common_spacing"
-            android:paddingTop="@dimen/smaller_spacing"
-            android:paddingBottom="@dimen/smaller_spacing"
-            tools:text="@sample/posts.json/data/content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/labelCoords"
-            app:layout_constraintTop_toBottomOf="@id/datetime"/>
+            <TableRow android:padding="1dp">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/labelDatetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:paddingBottom="@dimen/smaller_spacing"
+                    android:text="@string/datetime"/>
 
-        <TextView
-            android:id="@+id/labelLink"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/smaller_spacing"
-            android:paddingBottom="@dimen/smaller_spacing"
-            android:text="@string/link"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/link"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/datetime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/smaller_spacing"
+                    android:paddingBottom="@dimen/smaller_spacing"
+                    android:textColor="@color/black"
+                    tools:text="@sample/posts.json/data/author"/>
+            </TableRow>
 
-        <TextView
-            android:id="@+id/link"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/common_spacing"
-            android:paddingTop="@dimen/smaller_spacing"
-            android:paddingBottom="@dimen/smaller_spacing"
-            tools:text="@sample/posts.json/data/content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/labelLink"
-            app:layout_constraintTop_toBottomOf="@id/coords"/>
+            <TableRow android:padding="1dp">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/labelCoords"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:paddingBottom="@dimen/smaller_spacing"
+                    android:text="@string/position"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/coords"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="@dimen/smaller_spacing"
+                    android:paddingBottom="@dimen/smaller_spacing"
+                    android:textColor="@color/black"
+                    tools:text="@sample/posts.json/data/author"/>
+            </TableRow>
+
+            <TableRow android:padding="1dp">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/labelLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:paddingBottom="@dimen/smaller_spacing"
+                    android:text="@string/link"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:autoLink="web"
+                    android:paddingLeft="@dimen/smaller_spacing"
+                    android:paddingBottom="@dimen/smaller_spacing"
+                    android:textColor="@color/black"
+                    tools:text="@sample/posts.json/data/author"/>
+            </TableRow>
+        </TableLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -156,7 +164,7 @@
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/link">
+            app:layout_constraintTop_toBottomOf="@+id/tab">
 
             <ImageView
                 android:id="@+id/imageViewAttachment"

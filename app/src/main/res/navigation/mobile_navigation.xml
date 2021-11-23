@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_nav_events_to_usersFragment"
             app:destination="@id/usersFragment" />
+        <action
+            android:id="@+id/action_nav_events_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
     </fragment>
 
     <fragment
@@ -138,4 +141,9 @@
             android:id="@+id/action_mentionsFragment_to_wallFragment"
             app:destination="@id/wallFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/newEventFragment"
+        android:name="com.example.mysocialandroidapp2.activity.NewEventFragment"
+        android:label="fragment_new_event"
+        tools:layout="@layout/fragment_new_event" />
 </navigation>

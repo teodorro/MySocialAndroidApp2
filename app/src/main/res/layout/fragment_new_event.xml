@@ -20,13 +20,93 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edit"
+<!--            <EditText-->
+<!--                android:id="@+id/edit"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@android:color/transparent"-->
+<!--                android:inputType="textMultiLine"-->
+<!--                android:padding="@dimen/common_spacing" />-->
+
+
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:inputType="textMultiLine"
-                android:padding="@dimen/common_spacing" />
+                android:id="@+id/tab">
+
+                <TableRow android:padding="1dp">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/contentLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:padding="@dimen/small_spacing"
+                        android:text="@string/content"/>
+                    <EditText
+                        android:id="@+id/content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:inputType="textMultiLine"
+                        android:padding="@dimen/small_spacing"
+                        android:text="@sample/posts.json/data/content"/>
+                </TableRow>
+
+                <TableRow android:padding="1dp">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dateLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:padding="@dimen/small_spacing"
+                        android:text="@string/datetime"/>
+                    <EditText
+                        android:id="@+id/date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:padding="@dimen/small_spacing"
+                        android:text="@sample/posts.json/data/author"/>
+                </TableRow>
+
+                <TableRow android:padding="1dp">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/positionLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:padding="@dimen/small_spacing"
+                        android:text="@string/position"/>
+                    <EditText
+                        android:id="@+id/position"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:padding="@dimen/small_spacing"
+                        android:text="@sample/posts.json/data/author"/>
+                </TableRow>
+
+                <TableRow android:padding="1dp">
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/linkLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:padding="@dimen/small_spacing"
+                        android:text="@string/link"/>
+                    <EditText
+                        android:id="@+id/link"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:padding="@dimen/small_spacing"
+                        android:text="@sample/posts.json/data/author"/>
+                </TableRow>
+            </TableLayout>
 
             <FrameLayout
                 android:id="@+id/photoContainer"

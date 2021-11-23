@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -46,7 +47,7 @@ class NewEventFragment : Fragment() {
         return when (item.itemId) {
             R.id.save -> {
                 fragmentBinding?.let {
-                    viewModel.changeContent(it.edit.text.toString())
+                    viewModel.changeContent(it.content.text.toString())
 
                     viewModel.save()
                     AndroidUtils.hideKeyboard(requireView())
@@ -62,6 +63,7 @@ class NewEventFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_new_event)
         val binding = FragmentNewEventBinding.inflate(
             inflater,
             container,
@@ -70,9 +72,9 @@ class NewEventFragment : Fragment() {
         fragmentBinding = binding
 
         arguments?.textArg
-            ?.let(binding.edit::setText)
+            ?.let(binding.content::setText)
 
-        binding.edit.requestFocus()
+        binding.content.requestFocus()
 
         binding.pickPhoto.setOnClickListener {
             ImagePicker.with(this)
