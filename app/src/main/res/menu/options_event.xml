@@ -8,13 +8,15 @@
             android:id="@+id/remove"
             android:title="@string/menu_remove" />
         <item
+            android:id="@+id/participants"
+            android:title="@string/menu_participants" />
+    </group>
+    <group android:id="@+id/all_public">
+        <item
             android:id="@+id/likes"
             android:title="@string/menu_likes" />
         <item
             android:id="@+id/speakers"
             android:title="@string/menu_speakers" />
-        <item
-            android:id="@+id/participants"
-            android:title="@string/menu_participants" />
     </group>
 </menu>

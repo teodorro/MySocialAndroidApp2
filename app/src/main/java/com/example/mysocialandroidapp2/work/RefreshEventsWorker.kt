@@ -26,7 +26,8 @@ class RefreshEventsWorker(
             Result.success()
         } catch (e: Exception) {
             e.printStackTrace()
-            Result.retry()
+            Result.failure()
+//            Result.retry()
         }
     }
 

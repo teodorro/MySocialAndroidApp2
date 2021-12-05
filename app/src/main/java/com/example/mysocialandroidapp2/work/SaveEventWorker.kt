@@ -28,7 +28,8 @@ class SaveEventWorker (
             repository.processWork(id)
             Result.success()
         } catch (e: Exception) {
-            Result.retry()
+            Result.failure()
+//            Result.retry()
         }
     }
 

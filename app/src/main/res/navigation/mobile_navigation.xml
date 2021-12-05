@@ -44,6 +44,9 @@
         <action
             android:id="@+id/action_nav_events_to_newEventFragment"
             app:destination="@id/newEventFragment" />
+        <action
+            android:id="@+id/action_nav_events_to_mentionsFragment"
+            app:destination="@id/mentionsFragment" />
     </fragment>
 
     <fragment

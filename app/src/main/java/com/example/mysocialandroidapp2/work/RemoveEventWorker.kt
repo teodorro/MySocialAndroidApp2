@@ -27,7 +27,8 @@ class RemoveEventWorker (
             repository.removeWork(id)
             Result.success()
         } catch (e: Exception) {
-            Result.retry()
+            Result.failure()
+//            Result.retry()
         }
     }
 

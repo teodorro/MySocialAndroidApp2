@@ -37,7 +37,7 @@ data class EventEntity(
 
     companion object {
         fun fromDto(dto: Event) =
-            EventEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.content, dto.datetime, dto.published,
+            EventEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.content, if (dto.datetime != null) dto.datetime.toString() else null, dto.published,
                 CoordinatesEmbeddable.fromDto(dto.coords), dto.type == EventType.ONLINE,
                 dto.likeOwnerIds, dto.likedByMe, dto.speakerIds, dto.participantsIds, dto.participatedByMe,
                 AttachmentEmbeddable.fromDto(dto.attachment),

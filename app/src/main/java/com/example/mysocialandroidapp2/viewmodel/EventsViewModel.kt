@@ -11,6 +11,7 @@ import androidx.paging.cachedIn
 import androidx.paging.map
 import androidx.work.*
 import com.example.mysocialandroidapp2.auth.AppAuth
+import com.example.mysocialandroidapp2.dto.Coordinates
 import com.example.mysocialandroidapp2.dto.Event
 import com.example.mysocialandroidapp2.dto.MediaUpload
 import com.example.mysocialandroidapp2.enumeration.EventType
@@ -79,7 +80,10 @@ class EventsViewModel @Inject constructor(
     val dataState: LiveData<EventFeedModelState>
         get() = _dataState
 
-    private val edited = MutableLiveData(emptyEvent)
+    private val _edited = MutableLiveData(emptyEvent)
+    val edited: LiveData<Event>
+        get() = _edited
+
     private val _eventCreated = SingleLiveEvent<Unit>()
     val eventCreated: LiveData<Unit>
         get() = _eventCreated
@@ -141,21 +145,50 @@ class EventsViewModel @Inject constructor(
                 }
             }
         }
-        edited.value = emptyEvent
+        _edited.value = emptyEvent
         _photo.value = noPhoto
     }
 
     fun edit(event: Event) {
-        edited.value = event
+        _edited.value = event
     }
 
-    fun changeContent(content: String) {
-        val text = content.trim()
-        if (edited.value?.content == text) {
+    fun changeContent(content: String,
+                      position: String,
+                      date: String,
+                      link: String,) {
+        val content = content.trim()
+        val position = position.trim()
+        val date = date.trim()
+        val link = if (link.isNullOrBlank()) null else link.trim()
+
+        if (_edited.value?.content == content
+            && _edited.value?.coords.toString() == position
+            && _edited.value?.datetime == date
+            && _edited.value?.link == link
+        ) {
             return
         }
-//        edited.value = edited.value?.copy(content = text)
-        edited.value = edited.value?.copy(content = text, author = appAuth.userFlow.value.name, authorId = appAuth.userFlow.value.id)
+
+        val coordsStr = position.trim().split(" ")
+        val coordsLong = coordsStr.map { x ->
+            try{
+                x.trim().toDouble()
+            } catch (ex: Exception ){
+                0.0
+            }}
+        val coords = Coordinates(
+            if (coordsLong.count() > 0) coordsLong[0] else 0.0,
+            if (coordsLong.count() > 1) coordsLong[1] else 0.0)
+
+        _edited.value = edited.value?.copy(
+            content = content,
+            coords = coords,
+            datetime = date,
+            link = link,
+            author = appAuth.userFlow.value.name,
+            authorId = appAuth.userFlow.value.id
+        )
     }
 
     fun likeById(id: Long) {
@@ -163,7 +196,7 @@ class EventsViewModel @Inject constructor(
             try {
                 _dataState.value = EventFeedModelState(loading = true)
                 repository.likeById(id)
-                edited.value = edited.value?.copy(likedByMe = true)
+                _edited.value = edited.value?.copy(likedByMe = true)
                 _dataState.value = EventFeedModelState()
             } catch (e: Exception) {
                 _dataState.value = EventFeedModelState(error = true)
@@ -221,5 +254,16 @@ class EventsViewModel @Inject constructor(
         }
     }
 
-
+    fun participateById(id: Long) {
+        viewModelScope.launch {
+            try {
+                _dataState.value = EventFeedModelState(loading = true)
+                repository.participateEventById(id)
+                _edited.value = edited.value?.copy(participatedByMe = true)
+                _dataState.value = EventFeedModelState()
+            } catch (e: Exception) {
+                _dataState.value = EventFeedModelState(error = true)
+            }
+        }
+    }
 }

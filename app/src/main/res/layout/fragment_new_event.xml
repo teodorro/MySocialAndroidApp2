@@ -20,91 +20,104 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-<!--            <EditText-->
-<!--                android:id="@+id/edit"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@android:color/transparent"-->
-<!--                android:inputType="textMultiLine"-->
-<!--                android:padding="@dimen/common_spacing" />-->
+            <!--            <EditText-->
+            <!--                android:id="@+id/edit"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:background="@android:color/transparent"-->
+            <!--                android:inputType="textMultiLine"-->
+            <!--                android:padding="@dimen/common_spacing" />-->
 
 
             <TableLayout
+                android:id="@+id/tab"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/tab">
+                android:layout_height="wrap_content">
+
 
                 <TableRow android:padding="1dp">
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/contentLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:padding="@dimen/small_spacing"
-                        android:text="@string/content"/>
-                    <EditText
-                        android:id="@+id/content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:inputType="textMultiLine"
-                        android:padding="@dimen/small_spacing"
-                        android:text="@sample/posts.json/data/content"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/contentLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:padding="@dimen/small_spacing"
+                            android:text="@string/content" />
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#EEEEEEEE"
+                            android:inputType="textMultiLine"
+                            android:layout_weight="1"
+                            android:padding="@dimen/small_spacing"
+                            tools:ignore="DuplicateClickableBoundsCheck,SpeakableTextPresentCheck" />
                 </TableRow>
 
                 <TableRow android:padding="1dp">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/dateLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
                         android:ellipsize="end"
+                        android:maxLines="1"
                         android:padding="@dimen/small_spacing"
-                        android:text="@string/datetime"/>
-                    <EditText
+                        android:text="@string/datetime" />
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
+                        android:background="#EEEEEEEE"
+                        android:layout_weight="1"
+                        android:inputType="date"
                         android:padding="@dimen/small_spacing"
-                        android:text="@sample/posts.json/data/author"/>
+                        tools:ignore="DuplicateClickableBoundsCheck,SpeakableTextPresentCheck" />
                 </TableRow>
 
                 <TableRow android:padding="1dp">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/positionLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
                         android:ellipsize="end"
+                        android:maxLines="1"
                         android:padding="@dimen/small_spacing"
-                        android:text="@string/position"/>
-                    <EditText
+                        android:text="@string/position" />
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/position"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
+                        android:background="#EEEEEEEE"
+                        android:layout_weight="1"
                         android:padding="@dimen/small_spacing"
-                        android:text="@sample/posts.json/data/author"/>
+                        tools:ignore="DuplicateClickableBoundsCheck,SpeakableTextPresentCheck" />
                 </TableRow>
 
                 <TableRow android:padding="1dp">
+
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/linkLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
                         android:ellipsize="end"
+                        android:maxLines="1"
                         android:padding="@dimen/small_spacing"
-                        android:text="@string/link"/>
-                    <EditText
+                        android:text="@string/link" />
+
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/link"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
+                        android:background="#EEEEEEEE"
+                        android:layout_weight="1"
                         android:padding="@dimen/small_spacing"
-                        android:text="@sample/posts.json/data/author"/>
+                        tools:ignore="DuplicateClickableBoundsCheck,SpeakableTextPresentCheck" />
                 </TableRow>
             </TableLayout>
 

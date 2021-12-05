@@ -92,6 +92,7 @@ class NewJobFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        AndroidUtils.hideKeyboard(requireView())
         fragmentBinding = null
         super.onDestroyView()
     }

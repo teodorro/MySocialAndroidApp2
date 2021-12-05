@@ -80,7 +80,18 @@ class EventsFragment : Fragment() {
                     else -> emptySet()
                 }
                 val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
-                findNavController().navigate(R.id.action_nav_posts_to_usersFragment, listTypeBundle)
+                if (userListType == UserListType.SPEAKERS) {
+                    viewModel.edit(event)
+                    findNavController().navigate(
+                        R.id.action_nav_events_to_mentionsFragment,
+                        listTypeBundle
+                    )
+                } else
+                    findNavController().navigate(R.id.action_nav_events_to_usersFragment, listTypeBundle)
+            }
+
+            override fun onParticipate(event: Event) {
+                viewModel.participateById(event.id)
             }
         })
         binding.recyclerView.adapter = adapter

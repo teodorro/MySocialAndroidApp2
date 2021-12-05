@@ -100,6 +100,7 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:paddingBottom="@dimen/smaller_spacing"
+                    android:textSize="13sp"
                     android:text="@string/datetime"/>
 
                 <com.google.android.material.textview.MaterialTextView
@@ -121,6 +122,7 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:paddingBottom="@dimen/smaller_spacing"
+                    android:textSize="13sp"
                     android:text="@string/position"/>
 
                 <com.google.android.material.textview.MaterialTextView
@@ -142,6 +144,7 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:paddingBottom="@dimen/smaller_spacing"
+                    android:textSize="13sp"
                     android:text="@string/link"/>
 
                 <com.google.android.material.textview.MaterialTextView
@@ -195,6 +198,21 @@
             app:icon="@drawable/ic_like_24"
             tools:checked="@sample/posts.json/data/likedByMe"
             tools:text="@sample/posts.json/data/likes"
+            style="@style/Widget.AppTheme.LikeCheckBox"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/participate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkable="true"
+            android:layout_marginLeft="@dimen/common_spacing"
+            android:contentDescription="@string/description_event_participate"
+            app:layout_constraintStart_toEndOf="@+id/like"
+            app:layout_constraintTop_toBottomOf="@id/footer"
+            app:icon="@drawable/ic_check_24"
+            tools:checked="@sample/posts.json/data/likedByMe"
+            tools:text="@sample/posts.json/data/author"
             style="@style/Widget.AppTheme.LikeCheckBox"
             />
 

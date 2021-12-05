@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 import com.example.mysocialandroidapp2.dto.Event
 import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.enumeration.EventType
+import java.time.Instant
 
 @Entity
 data class EventWorkEntity(
@@ -38,7 +39,7 @@ data class EventWorkEntity(
 
     companion object {
         fun fromDto(dto: Event) =
-            EventWorkEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.content, dto.datetime, dto.published,
+            EventWorkEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.content, dto.datetime?.toString(), dto.published,
                 CoordinatesEmbeddable.fromDto(dto.coords), dto.type == EventType.ONLINE,
                 dto.likeOwnerIds, dto.likedByMe, dto.speakerIds, dto.participantsIds, dto.participatedByMe,
                 AttachmentEmbeddable.fromDto(dto.attachment),

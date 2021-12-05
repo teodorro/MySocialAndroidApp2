@@ -47,7 +47,12 @@ class NewEventFragment : Fragment() {
         return when (item.itemId) {
             R.id.save -> {
                 fragmentBinding?.let {
-                    viewModel.changeContent(it.content.text.toString())
+                    viewModel.changeContent(
+                        it.content.text.toString(),
+                        it.position.text.toString(),
+                        it.date.text.toString(),
+                        it.link.text.toString(),
+                    )
 
                     viewModel.save()
                     AndroidUtils.hideKeyboard(requireView())
@@ -73,6 +78,11 @@ class NewEventFragment : Fragment() {
 
         arguments?.textArg
             ?.let(binding.content::setText)
+
+        binding.content.setText(viewModel.edited.value?.content)
+        binding.date.setText(viewModel.edited.value?.datetime.toString())
+        binding.position.setText(viewModel.edited.value?.coords?.toString())
+        //binding.link.setText(viewModel.edited.value?.link)
 
         binding.content.requestFocus()
 
@@ -140,6 +150,7 @@ class NewEventFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+        AndroidUtils.hideKeyboard(requireView())
         fragmentBinding = null
         super.onDestroyView()
     }

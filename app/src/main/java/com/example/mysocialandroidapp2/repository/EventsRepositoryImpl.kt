@@ -191,7 +191,8 @@ class EventsRepositoryImpl @Inject constructor(
                     this.link = upload.file.toUri().toString()
                 }
             }
-            return eventWorkDao.insert(entity)
+            var a = eventWorkDao.insert(entity)
+            return a
         } catch (e: Exception) {
             throw UnknownError
         }
@@ -211,6 +212,7 @@ class EventsRepositoryImpl @Inject constructor(
             Log.d(null, entity.id.toString())
             Log.d(null, event.id.toString())
         } catch (e: Exception) {
+            var a = e.message
             throw UnknownError
         }
     }
