@@ -2,10 +2,7 @@ package com.example.mysocialandroidapp2.viewmodel
 
 import android.net.Uri
 import androidx.core.net.toFile
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -17,6 +14,7 @@ import com.example.mysocialandroidapp2.dto.MediaUpload
 import com.example.mysocialandroidapp2.enumeration.EventType
 import com.example.mysocialandroidapp2.model.EventFeedModelState
 import com.example.mysocialandroidapp2.model.PhotoModel
+import com.example.mysocialandroidapp2.model.UsersFeedModel
 import com.example.mysocialandroidapp2.repository.EventsRepository
 import com.example.mysocialandroidapp2.util.SingleLiveEvent
 import com.example.mysocialandroidapp2.work.RemoveEventWorker
@@ -44,7 +42,7 @@ private val emptyEvent = Event(
     datetime = Instant.now().toString(),
     coords = null,
     link = null,
-    speakerIds = emptySet(),
+    speakerIds = mutableSetOf(),
     participantsIds = emptySet(),
     participatedByMe = false,
     likeOwnerIds = emptySet(),
@@ -59,7 +57,7 @@ private val noPhoto = PhotoModel()
 class EventsViewModel @Inject constructor(
     private val repository: EventsRepository,
     private val workManager: WorkManager,
-    private val appAuth: AppAuth
+    val appAuth: AppAuth
 ) : ViewModel() {
 
     private val cached = repository
@@ -75,6 +73,13 @@ class EventsViewModel @Inject constructor(
                 }
             }
         }
+
+    val allUsers: LiveData<UsersFeedModel> = repository.allUsers
+        .map { users ->
+            UsersFeedModel(users,
+                users.isEmpty()
+            )
+        }.asLiveData()
 
     private val _dataState = MutableLiveData<EventFeedModelState>()
     val dataState: LiveData<EventFeedModelState>
@@ -107,6 +112,13 @@ class EventsViewModel @Inject constructor(
             _dataState.value = EventFeedModelState()
         } catch (e: Exception) {
             _dataState.value = EventFeedModelState(error = true)
+        }
+    }
+
+    fun loadUsers() = viewModelScope.launch {
+        try {
+            repository.getUsers()
+        } catch (e: Exception) {
         }
     }
 
@@ -264,6 +276,18 @@ class EventsViewModel @Inject constructor(
             } catch (e: Exception) {
                 _dataState.value = EventFeedModelState(error = true)
             }
+        }
+    }
+
+    fun updateSpeakers(userId: Long){
+        val event = edited.value
+        if (event != null) {
+            var speakers = event.speakerIds
+            if (speakers?.contains(userId))
+                speakers?.remove(userId)
+            else
+                speakers?.add(userId)
+            save()
         }
     }
 }

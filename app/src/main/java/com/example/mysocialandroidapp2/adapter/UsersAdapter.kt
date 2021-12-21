@@ -2,6 +2,7 @@ package com.example.mysocialandroidapp2.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,12 +12,16 @@ import com.example.mysocialandroidapp2.dto.User
 
 
 interface OnUserClickListener{
+    fun onCheckUser(user: User)
     fun onUserClicked(user: User)
+    fun isCheckboxVisible(user: User) : Boolean
+    fun isCheckboxChecked(user: User) : Boolean
 }
 
 
 class UsersAdapter(
-    private val userClickListener: OnUserClickListener
+    private val userClickListener: OnUserClickListener,
+    private val currentUserId: Long,
 ): ListAdapter<User, UsersAdapter.UsersViewHolder>(UsersDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersViewHolder {
@@ -26,7 +31,7 @@ class UsersAdapter(
                 parent,
                 false
             )
-        return UsersViewHolder(binding)
+        return UsersViewHolder(binding, currentUserId)
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
@@ -35,7 +40,7 @@ class UsersAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return position;
+        return position
     }
 
 
@@ -54,6 +59,7 @@ class UsersAdapter(
 
     class UsersViewHolder(
         private val binding: UserItemBinding,
+        private val currentUserId: Long,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         var userId: Long = -1
@@ -64,10 +70,16 @@ class UsersAdapter(
                 avatar.setImageResource(R.drawable.ic_avatar) // TODO
                 username.text = user.name
                 userId = user.id
+                checked.isVisible = clickListener.isCheckboxVisible(user)
+                checked.isChecked = clickListener.isCheckboxChecked(user)
             }
 
             itemView.setOnClickListener {
                 clickListener.onUserClicked(user)
+            }
+
+            binding.checked.setOnClickListener {
+                clickListener.onCheckUser(user)
             }
         }
     }

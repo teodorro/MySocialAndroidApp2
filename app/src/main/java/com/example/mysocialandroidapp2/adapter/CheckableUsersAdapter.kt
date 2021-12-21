@@ -7,36 +7,30 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mysocialandroidapp2.R
-import com.example.mysocialandroidapp2.databinding.MentionItemBinding
+import com.example.mysocialandroidapp2.databinding.UserCheckableItemBinding
 import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.dto.User
-import com.example.mysocialandroidapp2.enumeration.UserListType
 
 
-interface OnPostMentionListener {
-    fun onMention(user: User) {}
-    fun onUserClicked(user: User)
-}
 
-class MentionsAdapter(
-    private val onPostMentionListener: OnPostMentionListener,
-    private val post: Post?,
+class CheckableUsersAdapter(
+    private val onUserClickListener: OnUserClickListener,
     private val currentUserId: Long,
-    ): ListAdapter<User, MentionsAdapter.MentionsViewHolder>(MentionsDiffCallback())  {
+    ): ListAdapter<User, CheckableUsersAdapter.CheckableUsersViewHolder>(CheckableUsersDiffCallback())  {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MentionsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CheckableUsersViewHolder {
         var binding =
-            MentionItemBinding.inflate(
+            UserCheckableItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-        return MentionsViewHolder(binding, currentUserId)
+        return CheckableUsersViewHolder(binding, currentUserId)
     }
 
-    override fun onBindViewHolder(holder: MentionsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CheckableUsersViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, onPostMentionListener, post)
+        holder.bind(item, onUserClickListener)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -44,7 +38,7 @@ class MentionsAdapter(
     }
 
 
-    class MentionsDiffCallback : DiffUtil.ItemCallback<User>() {
+    class CheckableUsersDiffCallback : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
             return oldItem.id == newItem.id
         }
@@ -55,31 +49,31 @@ class MentionsAdapter(
     }
 
 
-    class MentionsViewHolder(
-        private val binding: MentionItemBinding,
+    class CheckableUsersViewHolder(
+        private val binding: UserCheckableItemBinding,
         private val currentUserId: Long,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         var userId: Long = -1
 
         fun bind(user: User,
-                 onPostMentionListener: OnPostMentionListener,
-                 post: Post?,){
+                 onUserClickListener: OnUserClickListener,){
             binding.apply {
 //                avatar.setImageUri(user.avatar)
                 avatar.setImageResource(R.drawable.ic_avatar) // TODO
                 username.text = user.name
                 userId = user.id
-                mentionedCheckBox.isChecked = post?.mentionIds?.contains(userId) ?: false
-                mentionedCheckBox.isVisible = post?.authorId == currentUserId
+                checked.isChecked = onUserClickListener.isCheckboxChecked(user)//post?.mentionIds?.contains(userId) ?: false
+                checked.isVisible = onUserClickListener.isCheckboxVisible(user)//post?.authorId == currentUserId
+                userItemLayout.isVisible = onUserClickListener.isCheckboxChecked(user)
             }
 
-            binding.mentionedCheckBox.setOnClickListener {
-                onPostMentionListener.onMention(user)
+            binding.checked.setOnClickListener {
+                onUserClickListener.onCheckUser(user)
             }
 
             itemView.setOnClickListener {
-                onPostMentionListener.onUserClicked(user)
+                onUserClickListener.onUserClicked(user)
             }
         }
     }

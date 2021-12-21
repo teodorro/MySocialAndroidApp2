@@ -28,7 +28,7 @@ class WallRepositoryImpl @Inject constructor(
     private val apiService: DataApiService,
     ): WallRepository {
 
-    @ExperimentalPagingApi
+    @OptIn(ExperimentalPagingApi::class)
     override var userId: Long = 0
     set(value) {
         field = value

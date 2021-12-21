@@ -34,7 +34,7 @@ class WallFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            viewModel.userId = it.get(POST_ID) as Long
+            viewModel.userId = it.get(USER_ID) as Long
             if (arguments != null)
                 wasCalledFromMenu = false
         }
@@ -79,7 +79,7 @@ class WallFragment : Fragment() {
                         UserListType.MENTIONS -> post.mentionIds
                         else -> emptySet()
                     }
-                    val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
+                    val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, USER_IDS to ids)
                     findNavController().navigate(
                         R.id.action_wallFragment_to_usersFragment,
                         listTypeBundle

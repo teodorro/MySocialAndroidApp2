@@ -14,7 +14,7 @@ data class Event(
     val type: EventType,
     val likeOwnerIds: Set<Long> = emptySet(),
     val likedByMe: Boolean = false,
-    val speakerIds: Set<Long> = emptySet(),
+    val speakerIds: MutableSet<Long> = mutableSetOf(),
     val participantsIds: Set<Long> = emptySet(),
     val participatedByMe: Boolean = false,
     val attachment: Attachment? = null,

@@ -10,51 +10,42 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.mysocialandroidapp2.R
+import com.example.mysocialandroidapp2.adapter.CheckableUsersAdapter
 import com.example.mysocialandroidapp2.adapter.OnUserClickListener
-import com.example.mysocialandroidapp2.adapter.UsersAdapter
-import com.example.mysocialandroidapp2.databinding.FragmentUsersBinding
+import com.example.mysocialandroidapp2.databinding.FragmentSpeakersBinding
 import com.example.mysocialandroidapp2.dto.User
-import com.example.mysocialandroidapp2.enumeration.UserListType
-import com.example.mysocialandroidapp2.viewmodel.UsersViewModel
+import com.example.mysocialandroidapp2.viewmodel.EventsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-const val USER_LIST_TYPE = "USER_LIST_TYPE"
-const val USER_IDS = "USER_IDS"
-const val USER_ID = "USER_ID"
 
 @AndroidEntryPoint
-class UsersFragment : Fragment(), OnUserClickListener {
-    private var userListType: UserListType? = null
+class SpeakersFragment : Fragment(), OnUserClickListener {
 
-    private val viewModel: UsersViewModel by viewModels(
+    private val viewModel: EventsViewModel by viewModels(
         ownerProducer = ::requireParentFragment,
     )
 
-    private var fragmentBinding: FragmentUsersBinding? = null
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            userListType = it.get(USER_LIST_TYPE) as UserListType
-            viewModel.userIds = it.get(USER_IDS) as Set<Long>
-        }
-    }
+    private var fragmentBinding: FragmentSpeakersBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_users)
+        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_speakers)
 
-        val binding = FragmentUsersBinding.inflate(inflater, container, false)
+        val binding = FragmentSpeakersBinding.inflate(inflater, container, false)
         fragmentBinding = binding
 
-        val adapter = UsersAdapter(this, 0)
+        val userId = viewModel.appAuth.authStateFlow.value.id
+
+//        val adapter = CheckableUsersAdapter(this, userId)
+        val adapter = CheckableUsersAdapter(this, userId)
         binding.usersList.adapter = adapter
 
-        viewModel.data.observe(viewLifecycleOwner) { state ->
+        viewModel.loadUsers()
+
+        viewModel.allUsers.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.users) {
             }
         }
@@ -64,23 +55,24 @@ class UsersFragment : Fragment(), OnUserClickListener {
 
     override fun onUserClicked(user: User) {
         val userIdBundle = bundleOf(USER_ID to user.id)
-        findNavController().navigate(R.id.action_usersFragment_to_wallFragment, userIdBundle)
+        findNavController().navigate(R.id.action_speakersFragment_to_wallFragment, userIdBundle)
     }
 
     override fun onCheckUser(user: User) {
+        viewModel.updateSpeakers(user.id)
     }
 
     override fun isCheckboxVisible(user: User): Boolean {
-        return false
+        return viewModel.edited.value?.authorId == viewModel.appAuth.authStateFlow.value.id
+//        return viewModel.edited.value?.authorId == user.id
     }
 
     override fun isCheckboxChecked(user: User): Boolean {
-        return false
+        return viewModel.edited.value?.speakerIds?.contains(user.id) ?: false
     }
 
     override fun onDestroyView() {
         fragmentBinding = null
         super.onDestroyView()
     }
-
 }

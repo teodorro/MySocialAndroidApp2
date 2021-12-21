@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.mysocialandroidapp2.auth.AppAuth
 import com.example.mysocialandroidapp2.model.FeedModelState
 import com.example.mysocialandroidapp2.model.UsersFeedModel
 import com.example.mysocialandroidapp2.repository.UsersRepository
@@ -14,8 +15,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UsersViewModel @Inject constructor(
-    private val repository: UsersRepository
+open class UsersViewModel @Inject constructor(
+    private val repository: UsersRepository,
+    open val appAuth: AppAuth
 ) : ViewModel() {
 
     var userIds: Set<Long> = emptySet()

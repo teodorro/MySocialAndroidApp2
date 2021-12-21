@@ -45,8 +45,8 @@
             android:id="@+id/action_nav_events_to_newEventFragment"
             app:destination="@id/newEventFragment" />
         <action
-            android:id="@+id/action_nav_events_to_mentionsFragment"
-            app:destination="@id/mentionsFragment" />
+            android:id="@+id/action_nav_events_to_speakersFragment"
+            app:destination="@id/speakersFragment" />
     </fragment>
 
     <fragment
@@ -149,4 +149,12 @@
         android:name="com.example.mysocialandroidapp2.activity.NewEventFragment"
         android:label="fragment_new_event"
         tools:layout="@layout/fragment_new_event" />
+    <fragment
+        android:id="@+id/speakersFragment"
+        android:name="com.example.mysocialandroidapp2.activity.SpeakersFragment"
+        android:label="SpeakersFragment" >
+        <action
+            android:id="@+id/action_speakersFragment_to_wallFragment"
+            app:destination="@id/wallFragment" />
+    </fragment>
 </navigation>

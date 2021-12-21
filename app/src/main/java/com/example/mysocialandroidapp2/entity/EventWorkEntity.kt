@@ -23,7 +23,7 @@ data class EventWorkEntity(
     val isOnline: Boolean = false,
     val likeOwnerIds: Set<Long> = emptySet(),
     val likedByMe: Boolean = false,
-    val speakerIds: Set<Long> = emptySet(),
+    val speakerIds: MutableSet<Long> = mutableSetOf(),
     val participantsIds: Set<Long> = emptySet(),
     val participatedByMe: Boolean = false,
     @Embedded

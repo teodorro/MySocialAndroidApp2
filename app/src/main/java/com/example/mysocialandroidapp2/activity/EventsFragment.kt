@@ -4,29 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.adapter.EventsAdapter
 import com.example.mysocialandroidapp2.adapter.OnEventInteractionListener
-import com.example.mysocialandroidapp2.adapter.OnPostInteractionListener
-import com.example.mysocialandroidapp2.adapter.PostsAdapter
 import com.example.mysocialandroidapp2.databinding.FragmentEventsBinding
-import com.example.mysocialandroidapp2.databinding.FragmentPostsBinding
 import com.example.mysocialandroidapp2.dto.Event
-import com.example.mysocialandroidapp2.dto.Post
 import com.example.mysocialandroidapp2.enumeration.UserListType
 import com.example.mysocialandroidapp2.viewmodel.EventsViewModel
-import com.example.mysocialandroidapp2.viewmodel.PostsViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -40,8 +32,7 @@ class EventsFragment : Fragment() {
         ownerProducer = ::requireParentFragment,
     )
 
-    private var _binding: FragmentEventsBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentEventsBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +41,7 @@ class EventsFragment : Fragment() {
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_events)
 
-        _binding = FragmentEventsBinding.inflate(inflater, container, false)
+        var _binding = FragmentEventsBinding.inflate(inflater, container, false)
 
         viewModel.clearLocalTable()
 
@@ -79,11 +70,11 @@ class EventsFragment : Fragment() {
                     UserListType.SPEAKERS -> event.speakerIds
                     else -> emptySet()
                 }
-                val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
+                val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, USER_IDS to ids)
                 if (userListType == UserListType.SPEAKERS) {
                     viewModel.edit(event)
                     findNavController().navigate(
-                        R.id.action_nav_events_to_mentionsFragment,
+                        R.id.action_nav_events_to_speakersFragment,
                         listTypeBundle
                     )
                 } else
@@ -94,31 +85,31 @@ class EventsFragment : Fragment() {
                 viewModel.participateById(event.id)
             }
         })
-        binding.recyclerView.adapter = adapter
+        _binding.recyclerView.adapter = adapter
 
         viewModel.dataState.observe(viewLifecycleOwner, { state ->
-            binding.progress.isVisible = state.loading
-            binding.swiperefresh.isRefreshing = state.refreshing
+            _binding.progress.isVisible = state.loading
+            _binding.swiperefresh.isRefreshing = state.refreshing
             if (state.error) {
-                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
+                Snackbar.make(_binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
                     .setAction(R.string.retry_loading) { viewModel.loadPosts() }
                     .show()
             }
         })
 
-        binding.swiperefresh.setOnRefreshListener {
+        _binding.swiperefresh.setOnRefreshListener {
             viewModel.refreshPosts()
             adapter.refresh()
             viewModel.updateWasSeen()
         }
 
-        binding.fab.setOnClickListener {
+        _binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_nav_events_to_newEventFragment)
         }
 
-        binding.fabNewPosts.setOnClickListener {
+        _binding.fabNewPosts.setOnClickListener {
             viewModel.updateWasSeen()
-            binding.fabNewPosts.isVisible = false
+            _binding.fabNewPosts.isVisible = false
             newPostsWasPressed = true
         }
 
@@ -129,20 +120,20 @@ class EventsFragment : Fragment() {
         // show indicator
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest { state ->
-                binding.swiperefresh.isRefreshing =
+                _binding.swiperefresh.isRefreshing =
                     state.refresh is LoadState.Loading ||
                             state.prepend is LoadState.Loading ||
                             state.append is LoadState.Loading
             }
         }
 
-        binding.swiperefresh.setOnRefreshListener(adapter::refresh)
+        _binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
-        return binding.root
+        return _binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        binding = null
     }
 }

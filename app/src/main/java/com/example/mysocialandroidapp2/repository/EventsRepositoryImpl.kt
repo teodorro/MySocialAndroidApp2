@@ -15,7 +15,9 @@ import com.example.mysocialandroidapp2.error.ApiError
 import com.example.mysocialandroidapp2.error.AppError
 import com.example.mysocialandroidapp2.error.NetworkError
 import com.example.mysocialandroidapp2.error.UnknownError
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -29,6 +31,7 @@ class EventsRepositoryImpl @Inject constructor(
     private val appDb: AppDb,
     eventRemoteKeyDao: EventRemoteKeyDao,
     private val apiService: DataApiService,
+    private val userDao: UserDao,
 ): EventsRepository {
 
     @OptIn(ExperimentalPagingApi::class)
@@ -38,6 +41,28 @@ class EventsRepositoryImpl @Inject constructor(
         pagingSourceFactory = eventDao::pagingSource,
     ).flow.map { pagingData ->
         pagingData.map(EventEntity::toDto)
+    }
+
+    override val allUsers = userDao.getAll()
+        .map(List<UserEntity>::toDto)
+        .flowOn(Dispatchers.Default)
+
+    override suspend fun getUsers() {
+        try {
+            // получить всех пользователей с сервера
+            val response = apiService.getUsersAll()
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            // обновить базу. Новые добавить, несовпадающие заменить.
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            userDao.insert(body.toEntity())
+        } catch (e: IOException) {
+            throw NetworkError
+        } catch (e: Exception) {
+            throw com.example.mysocialandroidapp2.error.UnknownError
+        }
     }
 
     override fun getNewerCount(eventId: Long): Flow<Int> {

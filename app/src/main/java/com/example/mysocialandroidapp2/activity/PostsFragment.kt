@@ -1,6 +1,5 @@
 package com.example.mysocialandroidapp2.activity
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,18 +15,16 @@ import androidx.work.*
 import com.example.mysocialandroidapp2.R
 import com.example.mysocialandroidapp2.adapter.OnPostInteractionListener
 import com.example.mysocialandroidapp2.adapter.PostsAdapter
-import com.example.mysocialandroidapp2.databinding.FragmentNewPostBinding
 import com.example.mysocialandroidapp2.databinding.FragmentPostsBinding
 import com.example.mysocialandroidapp2.dto.Post
+import com.example.mysocialandroidapp2.dto.User
 import com.example.mysocialandroidapp2.enumeration.UserListType
+import com.example.mysocialandroidapp2.model.UsersFeedModel
 import com.example.mysocialandroidapp2.viewmodel.PostsViewModel
 import com.example.mysocialandroidapp2.viewmodel.emptyPost
-import com.example.mysocialandroidapp2.work.RefreshPostsWorker
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -43,6 +40,8 @@ class PostsFragment : Fragment() {
     )
 
     private var fragmentBinding: FragmentPostsBinding? = null
+
+    private lateinit var allUsers: List<User>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,12 +76,25 @@ class PostsFragment : Fragment() {
                 }
 
                 override fun onShowUsers(post: Post, userListType: UserListType) {
+
+//                    var a =
+//                        if (post.authorId != viewModel.appAuth.authStateFlow.value.id) post.mentionIds
+//                        else (if (viewModel.allUsers.value != null)
+//                            viewModel.allUsers.value!!.users.map { x -> x.id }.toMutableSet()
+//                            else emptySet())
+
                     val ids = when (userListType) {
                         UserListType.LIKES -> post.likeOwnerIds
-                        UserListType.MENTIONS -> post.mentionIds
+//                        UserListType.MENTIONS -> post.mentionIds
+                        UserListType.MENTIONS ->
+                            if (post.authorId != viewModel.appAuth.authStateFlow.value.id)
+                                post.mentionIds
+                            else (if (allUsers != null)
+                                allUsers.map { x -> x.id }.toMutableSet()
+                                else emptySet())
                         else -> emptySet()
                     }
-                    val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, POST_IDS to ids)
+                    val listTypeBundle = bundleOf(USER_LIST_TYPE to userListType, USER_IDS to ids)
                     if (userListType == UserListType.MENTIONS) {
                         viewModel.edit(post)
                         findNavController().navigate(
@@ -99,6 +111,7 @@ class PostsFragment : Fragment() {
             userId
         )
         binding.recyclerView.adapter = adapter
+
 
         viewModel.dataState.observe(viewLifecycleOwner, { state ->
             binding.progress.isVisible = state.loading
@@ -142,11 +155,20 @@ class PostsFragment : Fragment() {
             }
         }
 
+        lifecycleScope.launchWhenCreated {
+            viewModel.allUsers.collectLatest { x ->
+                getAllUsers(x) }
+        }
+
         binding.swiperefresh.setOnRefreshListener(adapter::refresh)
 
         adapter.refresh()
 
         return binding.root
+    }
+
+    private fun getAllUsers(usersFeedModel: UsersFeedModel){
+        allUsers = usersFeedModel.users
     }
 
     override fun onDestroyView() {

@@ -68,12 +68,18 @@ class PostsViewModel @Inject constructor(
             }
         }
 
-    val allUsers: LiveData<UsersFeedModel> = repository.allUsers
+//    val allUsers: LiveData<UsersFeedModel> = repository.allUsers
+//        .map { users ->
+//            UsersFeedModel(users,
+//                users.isEmpty()
+//            )
+//        }.asLiveData()
+    val allUsers: Flow<UsersFeedModel> = repository.allUsers
         .map { users ->
             UsersFeedModel(users,
                 users.isEmpty()
             )
-        }.asLiveData()
+        }
 
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>

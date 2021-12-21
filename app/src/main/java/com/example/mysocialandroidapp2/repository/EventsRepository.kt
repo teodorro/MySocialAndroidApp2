@@ -4,6 +4,7 @@ import androidx.paging.PagingData
 import com.example.mysocialandroidapp2.dto.Event
 import com.example.mysocialandroidapp2.dto.Media
 import com.example.mysocialandroidapp2.dto.MediaUpload
+import com.example.mysocialandroidapp2.dto.User
 import kotlinx.coroutines.flow.Flow
 
 interface EventsRepository {
@@ -21,4 +22,6 @@ interface EventsRepository {
     suspend fun processWork(eventId: Long)
     suspend fun removeWork(eventId: Long)
     suspend fun clearLocalTable()
+    val allUsers: Flow<List<User>>
+    suspend fun getUsers()
 }
